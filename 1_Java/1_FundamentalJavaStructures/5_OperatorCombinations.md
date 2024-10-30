@@ -158,11 +158,11 @@ means
 | `== !=`                    | Left to Right   |
 | `&`                        | Left to Right   |
 | `^`                        | Left to Right   |
-| `|`                        | Left to Right   |
+| `'or' operator (one vertical bar)`                        | Left to Right   |
 | `&&`                       | Left to Right   |
-| `||`                       | Left to Right   |
+| `'or' operator (double vertical bar)`| Left to Right   |
 | `?:`                       | Right to Left   |
-| `= += -= *= /= %= &= (verticalBar)= ^= <<= >>= >>>=` | Right to Left  |
+| `= += -= *= /= %= &= (verticalBar 'or')= ^= <<= >>= >>>=` | Right to Left  |
 
 Since `+=` associates right to left, the expression
 
