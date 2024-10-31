@@ -248,11 +248,11 @@ We also list the version number in which a particular class was introduced. If a
 
     - `char chatAt(int index)`
 
-        - _returns_ the <u>code unit at the specified location</u>. You probably don't want to call this method unless you are interested in low-level code units.
+        - _returns_ the _code unit_ at the specified location. You probably don't want to call this method unless you are interested in low-level code units.
 
     - `int codePointAt(int index)` - 5.0
 
-        - _returns_ the <u>code point</u> that starts at the specified location.
+        - _returns_ the _code point_ that starts at the specified location.
 
     - `int offsetByCodePoints(int startIndex, int cpCount)` - 5.0
 
@@ -260,4 +260,6 @@ We also list the version number in which a particular class was introduced. If a
 
     - `int compareTo(String other)`
 
-        - returns a _negative value_ if the string comes before `other` 
+        - _returns_ a _negative value_ if the string comes _before_ `other` in **dictionary order**, a _positive value_ if the string comes _after_ `other` in **dictionary order**, or _`0`_ if the strings are _equal_.
+
+    - 
