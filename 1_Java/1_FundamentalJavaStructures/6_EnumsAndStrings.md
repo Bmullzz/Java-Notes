@@ -336,5 +336,70 @@ As you just saw, the `String` class has lots of methods. Furthermore, there are 
 
 ## Building Strings
 
+Occasionally, you need to build up strings from shorter strings, such as keystrokes or words from a file. It would be inefficient to use string concatenation for this purpose. Every time you concatenate strings, a new `String` object is constructed. This is time consuming and wastes memory. Using the `StringBuilder` class avoinds this problem.
 
+Follow these steps if you need to build a string from many small pieces. First, construct an empty string builder:
+
+```Java
+StringBuilder builder = new StringBuilder();
+```
+
+Each time you need to add another part, call the `append` method.
+
+```Java
+builder.append(ch); // appends a single character
+builder.append(str); // appends a string
+```
+
+When you are done building the string, call the `toString` method. You will get a `String` object with the character sequence contained in the builder.
+
+```Java
+String completedString = builder.toString();
+```
+
+- NOTE: The `StringBuilder` class was introduced in JDK 5.0. Its predecessor, `StringBuffer`, is slightly less efficient, but it allows multiple threads to add or remove characters. If all string editing happens in a single thread (which is usually the case), you should use `StringBuilder` instead. The APIs of both classes are identical.
+
+The following API notes contain the most important methods for the `StringBuilder` class.
+
+- `java.lang.StringBuilder` - 5.0
+
+    - `StringBuilder()`
+
+        - _constructs_ an empty string builder.
+
+    - `int length()`
+
+        - _returns_ the _number_ of code units of the builder or buffer.
+
+    - `StringBuilder append(String str)`
+
+        - appends a _string_ and _returns_ `this`.
+
+    - `StringBuilder append(char c)`
+
+        - appends a _code unit_ and _returns_ `this`.
+
+    - `StringBuilder appendCodePoint(int cp)`
+
+        - appends a _code point_, converting it into one or two code units, and returns `this`. 
+
+    - `void setCharAt(int i, char c)`
+
+        - set the `i`th code unit to `c`.
+
+    - `StringBuilder insert(int offset, String str)`
+
+        - inserts a _string_ at position `offset` and returns `this`.
+
+    - `StringBuilder insert(int offset, char c)`
+
+        - inserts a _code unit_ at position `offset` and returns `this`
+
+    - `StringBuilder delete(int startIndex, int endIndex)`
+
+        - deletes the code units with offsets `startIndex` to `endIndex - 1` and _returns_ `this`.
+
+    - `String toString()`
+
+        - _returns_ a _string_ with the same data as the builder or buffer contents.
 
