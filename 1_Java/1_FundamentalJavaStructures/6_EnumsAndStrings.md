@@ -1,15 +1,16 @@
 # Enumerated Types and Strings
 
-- Enumerated Types
-- Strings
-- Substrings
-- Concatenation
-- Strings are Immutable
-- Testing Strings for Equality
-- Empty and Null Strings
-- Code Points and Code Units
-- The String API
-- Building Strings
+- [Enumerated Types](#enumerated-types)
+- [Strings](#strings)
+- [Substrings](#substrings)
+- [Concatenation](#concatenation)
+- [Strings are Immutable](#strings-are-immutable)
+- [Testing Strings for Equality](#testing-strings-for-equality)
+- [Empty and Null Strings](#empty-an-null-strings)
+- [Code Points and Code Units](#code-points-and-code-units)
+- [The String API](#the-string-api)
+    - This section contains a list of the most useful methods in the String API.
+- [Building Strings]()
 
 ## Enumerated Types
 
@@ -163,3 +164,80 @@ You need to test that `str` is not `null` first. As you will see in chapter 4, i
 
 ## Code Points and Code Units
 
+Java strings are implemented as sequences of `char` values. As we discussed in The `char` Type section, the `char` data type is a code unit for representing Unicode code points in the UTF-16 encodig. The most commonly used Unicode characters can be represented with a single code unit. The supplementary characters requirea pair of code units.
+
+The `length` method yields the number of code units required for a given string in the UTF-16 encoding. For example:
+
+```Java
+String greeting = "Hello";
+int n = greeting.length(); // is 5.
+```
+
+To get the true length -- that is, the number of code points -- call
+
+```Java
+int cpCount = greeting.codePointCount(0, greeting.length());
+```
+
+The call `s.charAt(n)` returns the code unit at position `n`, where `n` is between `0` and `s.length() - 1`. For example:
+
+```Java
+char first = greeting.charAt(0); // first is "H"
+char last = greeting.charAt(4); // last is "o"
+```
+
+To get at the `i`th code point, use the statements
+
+```Java
+int index = greeting.offsetByCodePoints(0, i);
+int cp = greeting.codePointAt(index);
+```
+
+Why are we making a fuss about code units? 
+Consider the sentence
+
+- "&Oopf; is the set of octonians"
+
+The character &Oopf; (`U+1D546) requirestwo code units in the UTF-16 encoding. Calling
+
+```Java
+char ch = sentence.charAt(1);
+```
+
+doesn't return a space but the second code unit of &Oopf;. To avoid this problem, you should _not_ use the `char` type. It is too low-level.
+
+If your code traverses a string, and you want to look at each code point in turn, you can use these statements:
+
+```Java
+int cp = sentence.codePointAt(i);
+if (Character.isSupplementaryCodePoint(cp)) i += 2;
+else i++;
+```
+
+You can move backwards with the following statements:
+
+```Java
+i--;
+if (Character.isSurrogate(sentence.charAt(i))) i--;
+int cp = sentence.codePointAt(i);
+```
+
+Obviously, that is quite painful. An easier way is to use the `codePoints` method that yields a "stream" of `int` values, one for each code point. (We will discuss streams later on.) You can just turn it into an array and traverse that.
+
+```Java
+int[] codePoints = str.codePoints().toArray();
+```
+
+Conversely, to turn an array of code points to a string, use a _constructor_. (We discuss constructors and the `new` operator in detail later on.)
+
+```Java
+String str = new String(codePoints, 0, codePoints.length);
+```
+
+## The String API
+
+The `String` class in Java contains more than 50 methods. A surprisingly large number of them are suufficiently useful so that we can imagine using them frequently. The following API note summarizes the most useful of them.
+
+- NOTE: These API notes will help you understand the Java Application Programming Interface (API). Each API note starts with the name of a class, such as `java.lang.String` (the significance is explained later on.) The class name is followed by the names, explanations, and paramter descriptions of one or more methods. 
+
+The methods in this list does not contain all of the methods in the `String` class, but contains the most commonly used and describes them in a concise form.

@@ -1,22 +1,28 @@
 # Java Data Types
 
+- [Integer Types](#integer-types)
+- [Floating-Point Types](#floating-point-types)
+- [The `char` Type](#the-char-type)
+- [The `boolean` type](#the-boolean-type)
+
 Java is a _strongly typed language_.  This means that every variable **must have a declared type**.  There are **eight** _primitive types_ in Java.  Four are integer types, 2 are floating-point number types, one is the character type `char` (used for code units in the Unicode encoding scheme), and one is a `boolean` type for truth values.
 
-- 4 integer types:
-    - `int`
-    - `short`
-    - `long`
-    - `byte`
+- **8 data types** in _total_:
+    - 4 integer types:
+        - `int`
+        - `short`
+        - `long`
+        - `byte`
 
-- 2 floating-point types:
-    - `float`
-    - `double`
+    - 2 floating-point types:
+        - `float`
+        - `double`
 
-- 1 `char` type:
-    - `char`
+    - 1 `char` type:
+        - `char`
 
-- 1 `boolean` type:
-    - `boolean`
+    - 1 `boolean` type:
+        - `boolean`
 
 ## Integer Types
 
@@ -130,15 +136,15 @@ Escape sequences for Special Characters:
 
     -yields a syntax error because `\u` is not followed by four hex digits.
 
-    ## The `boolean` type
+## The `boolean` type
 
-    The `boolean` type has two values, `false` and `true`. It is used for evaluating logical conditions. You **cannot** convert between integers and `boolean` values.
+The `boolean` type has two values, `false` and `true`. It is used for evaluating logical conditions. You **cannot** convert between integers and `boolean` values.
 
-    - NOTE: In **C++**, numbers and even pointers can be used in place of `boolean` values. The value `0` is equivalent to the `bool` value `false`, and a nonzero value is equivalent to `true`. This is _not_ the case in Java. Thus, Java programmers are shielded from accidents such as
+- NOTE: In **C++**, numbers and even pointers can be used in place of `boolean` values. The value `0` is equivalent to the `bool` value `false`, and a nonzero value is equivalent to `true`. This is _not_ the case in Java. Thus, Java programmers are shielded from accidents such as
 
-    ```C++
-    if (x = 0) //oops... meant x == 0
-    ```
+```C++
+if (x = 0) //oops... meant x == 0
+```
 
-    - In C++, this test compiles and runs, always evaluating to `false`. In Java, the test does not compile because the integer expression `x= 0` cannot be converted to a `boolean` value.
+- In C++, this test compiles and runs, always evaluating to `false`. In Java, the test does not compile because the integer expression `x= 0` cannot be converted to a `boolean` value.
 
