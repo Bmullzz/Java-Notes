@@ -10,7 +10,7 @@
 - [Code Points and Code Units](#code-points-and-code-units)
 - [The String API](#the-string-api)
     - This section contains a list of the most useful methods in the String API.
-- [Building Strings]()
+- [Building Strings](#building-strings)
 
 ## Enumerated Types
 
@@ -244,7 +244,7 @@ The methods in this list does not contain all of the methods in the `String` cla
 
 We also list the version number in which a particular class was introduced. If a method has been added later, it has a separate version number.
 
-- `java.lang.String' - 1.0
+- `java.lang.String` - 1.0
 
     - `char chatAt(int index)`
 
@@ -262,4 +262,79 @@ We also list the version number in which a particular class was introduced. If a
 
         - _returns_ a _negative value_ if the string comes _before_ `other` in **dictionary order**, a _positive value_ if the string comes _after_ `other` in **dictionary order**, or _`0`_ if the strings are _equal_.
 
-    - 
+    - `IntStream codePoints()` - 8
+
+        - _returns_ the _code points_ of the this string as a stream. Call `toArray` to put them in an array.
+
+    - `new String(int[] codePoints, int offset, int count)` - 5.0
+
+        - _constructs_ a string with the `count` code points in the array starting at `offset`.
+
+    - `boolean equals(Object other)`
+
+        - _returns_ `true` if the string equals `other`.
+
+    - `boolean equalsIgnoreCase(String other)`
+
+        - _returns_ `true` if the string equals `other`, except for _upper_ / _lowercase_ distinction.
+
+    - `boolean startsWith(String prefix)`
+
+        - _returns_ `true` if the string _starts_ with `prefix`.
+
+    - `boolean endsWith(String suffix)`
+
+        - _returns_ `true` if the string _ends_ with `suffix`.
+
+    - `int indexOf(String str)`
+    - `int indexOf(String str, int fromIndex)`
+    - `int indexOf(int cp)`
+    - `int indexOf(int cp, int fromIndex)`
+
+        - _returns_ the start of the _first_ substring equal to the string `str` or the code point `cp`, starting at index `0` or at `fromIndex`, or `-1` if `str` does not occur in this string.
+
+    - `int lastIndexOf(String str)`
+    - `int lastIndexOf(String str, int fromIndex)`
+    - `int lastIndexOf(int cp)`
+    - `int lastIndexOf(int cp, int fromIndex)`
+
+        - _returns_ the start of the _last_ substring equal to the string `str` or the code point `cp`, starting at the end of the string or at `fromIndex`.
+
+    - `int length()`
+
+        - _returns_ the _number_ of code units of the string.
+
+    - `int codePointCount(int startIndex, int endIndex)` - 5.0
+
+        - _returns_ the _number_ of code points between `startIndex` and `endIndex - 1`.
+
+    - `String replace(CharSequence oldString, CharSequence newString)
+
+        - _returns_ a _new string_ that is obtained by replacing all substrings matching `oldString` in the string with the string `newString`. You can supply `String` or `StringBuilder` objects for the `CharSequence` parameters.
+
+    - `String substring(int beginIndex)`
+    - `String substring(int beginIndex, int endIndex)`
+
+        - _returns_ a _new string_ consisting of all code units from `beginIndex` until the end of the string or until `endIndex - 1`.
+
+    - `String toLowerCase()`
+    - `String toUpperCase()`
+
+        - _returns_ a _new string_ containing all characters in the original string, with uppercase characters converted to lowercase, or lowercase characters converted to uppercase.
+
+    - `String trim()`
+
+        - _returns_ a _new string_ by eliminating all leading and trailing whitespace in the original string.
+
+    - `String join(CharSequence delimiter, CharSequence... elements)` - 8
+
+        - _returns_ a _new string_ joining all elements with the given delimiter.
+
+    -NOTE: In the above API notes, there are a few parameters of type `CharSequence`. This is an _interface_ type to which all strings belong. We will discuss interface types later on. For now, you just need to know that _you can pass arguments of type `String` whenever you see a `CharSequence` parameter_.
+
+As you just saw, the `String` class has lots of methods. Furthermore, there are thousands of classes in the standard libraries, with many more methods. It is plainly impossible to remember all useful classes and methods. Therefore, it is essential that you become familiar with the online API documentation that lets you look up all classes and methods in the standard library. You can download the API documentation, or you can navigate to https://docs.oracle.com/en/java/javase/22/docs/api/java.base/java/lang/package-summary.html
+
+## Building Strings
+
+
+
