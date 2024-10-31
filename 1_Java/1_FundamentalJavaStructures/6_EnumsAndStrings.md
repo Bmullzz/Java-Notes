@@ -240,4 +240,24 @@ The `String` class in Java contains more than 50 methods. A surprisingly large n
 
 - NOTE: These API notes will help you understand the Java Application Programming Interface (API). Each API note starts with the name of a class, such as `java.lang.String` (the significance is explained later on.) The class name is followed by the names, explanations, and paramter descriptions of one or more methods. 
 
-The methods in this list does not contain all of the methods in the `String` class, but contains the most commonly used and describes them in a concise form.
+The methods in this list does not contain all of the methods in the `String` class, but contains the most commonly used and describes them in a concise form. 
+
+We also list the version number in which a particular class was introduced. If a method has been added later, it has a separate version number.
+
+- `java.lang.String' - 1.0
+
+    - `char chatAt(int index)`
+
+        - returns the code unit at the specified location. You probably don't want to call this method unless you are interested in low-level code units.
+
+    - `int codePointAt(int index)` - 5.0
+
+        - _returns_ the _code point_ that starts at the specified location.
+
+    - `int offsetByCodePoints(int startIndex, int cpCount)` - 5.0
+
+        - _returns_ the _index of the code point_ that is `cpCount` code points away from the code point `startIndex`.
+
+    - `int compareTo(String other)`
+
+        - returns a _negative value_ if the string comes before `other` 
