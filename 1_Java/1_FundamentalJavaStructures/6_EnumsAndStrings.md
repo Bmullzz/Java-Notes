@@ -248,11 +248,11 @@ We also list the version number in which a particular class was introduced. If a
 
     - `char chatAt(int index)`
 
-        - **returns** the **code unit at the specified location**. You probably don't want to call this method unless you are interested in low-level code units.
+        - _returns_ the <u>code unit at the specified location</u>. You probably don't want to call this method unless you are interested in low-level code units.
 
     - `int codePointAt(int index)` - 5.0
 
-        - _returns_ the _code point_ that starts at the specified location.
+        - _returns_ the <u>code point</u> that starts at the specified location.
 
     - `int offsetByCodePoints(int startIndex, int cpCount)` - 5.0
 
