@@ -1,5 +1,8 @@
 # Java Variables
 
+- [Initializing Variables](#initializing-variables)
+- [Constants](#constants)
+
 In Java, every variable has a _type_. You declare a variable by placing the type first, followed by the name of the variable. Here are some examples:
 
 ```java

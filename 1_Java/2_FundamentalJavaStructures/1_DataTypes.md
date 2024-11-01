@@ -3,6 +3,7 @@
 - [Integer Types](#integer-types)
 - [Floating-Point Types](#floating-point-types)
 - [The `char` Type](#the-char-type)
+- [Unicode and the `char` Type](#unicode-and-the-char-type)
 - [The `boolean` type](#the-boolean-type)
 
 Java is a _strongly typed language_.  This means that every variable **must have a declared type**.  There are **eight** _primitive types_ in Java.  Four are integer types, 2 are floating-point number types, one is the character type `char` (used for code units in the Unicode encoding scheme), and one is a `boolean` type for truth values.
@@ -135,6 +136,22 @@ Escape sequences for Special Characters:
     ```
 
     -yields a syntax error because `\u` is not followed by four hex digits.
+
+## Unicode and the `char` Type
+
+To fully understand the `char` type, you have to know about the Unicode encoding scheme. Unicode was invented to overcome the limitations of traditional character encoding schemes. Before Unicode, there were many different standards: ASCII in the United States, ISO 8859-1 for Western European languages, KOI-8 for Russian, GB18030 and BIG-5 for Chinese, and so on. This caused two problems. Aparticular code value corresponds to different letters in the different encoding schemes. Moreover, the encodings for languages with large character sets have variable length: Some common characters are encoded as single bytes, others require two or more bytes.
+
+Unicode was designed to solve these problems. When the unification effort started in the 1980's, a fixed 2-byte code was more than sufficient to encode all characters used in all languages around the world, with room to spare for future expansion -- or so everyone thought at the time. In 1991, Unicode 1.0 was released, using slightly less than half of the available 65,536 code values. Java was designed from the ground up to use 16-bit Unicode characters, which was a major advance over other programming languages that used 8-bit characters.
+
+Unfortunately, over time, the inevitable happened. Unicode grew beyond 65,536 characters, primarily due to the addition of a very large set of ideographs used for Chinese, Japanese, and Korean. Now, the 16-bit `char` type is insufficient to describe all Unicode characters.
+
+We need a bit of terminology to explain how this problem is resolved in Java, beginning with Java SE 5.0. A _code point_ is a code value that is associated with a character in an encoding scheme. In the Unicode standard, code points are written in hexadecimal and prefixed with `U+`, such as `U+0041` for the code point of the Latin letter `A`. Unicode has code points that are grouped into 17 _code planes_. The first code plane, called the _basic multilingual plane_, consists of the "classic" Unicode characters with code points `U+0000` to `U+FFFF`. Sixteen additional planes with code points `U+10000` to `U+10FFFF`, hold the _supplementary characters_.
+
+The UTF-16 encoding represents all Unicode points in a variable-lengthcode. The characters in the basic multilingual plane are represented as 16-bit values, called _code units_. The supplementary characters are encoded as consecutive pairs of code units. Each of the values in such an encoding pair falls into a range of 2048 unused values of the basic multilingual plane, called the _surrogates area_ (`U+D800` to `U+DBFF` for the first code unit, `U+DC00` to `U+DFFF` for the second code unit). This is rather clever, because you can immediately tell whether a code unit encodes a single character or it is the first or second part of a supplementary character. For example, &Oopf; (the mathematical symbol for the set of octonians) has the code point `U+1D546` and is encoded by the two code units `U+D845` and `U+DD46`. (See https://en.wikipedia.org/wiki/UTF-16 for a description of the encoding algorithm.)
+
+In Java, the `char` type describes a _code unit_ in the UTF-16 encoding.
+
+It is _strongly_ reccomended to not use the `char` type in your programs unless you are actually manipulating UTF-16 code units. You are almost _always_ better off treating strings as _abstract data types_.
 
 ## The `boolean` type
 

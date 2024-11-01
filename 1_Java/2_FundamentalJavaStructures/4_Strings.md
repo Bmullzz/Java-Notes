@@ -1,6 +1,6 @@
 # Strings
 
-- [Strings](#strings)
+- [Strings](#strings-1)
 - [Substrings](#substrings)
 - [Concatenation](#concatenation)
 - [Strings are Immutable](#strings-are-immutable)
