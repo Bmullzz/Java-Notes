@@ -1,8 +1,10 @@
 # Java
 
-1. **The Java Programming Environment**
+- [1. The Java Programming Environment](#1-the-java-programming-environment)
 
-    - **1.1** - [**Installing the Java Development Kit**](1_Java/1_TheJavaProgrammingEnvironment/1_InstallingTheJavaDevelopmentKit.md)
+## **1. The Java Programming Environment**
+
+- **1.1** - [**Installing the Java Development Kit**](1_Java/1_TheJavaProgrammingEnvironment/1_InstallingTheJavaDevelopmentKit.md)
 
 2. **Fundamental Java Structures**
 
