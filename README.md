@@ -6,21 +6,21 @@
 
 - **1.1** - [**Installing the Java Development Kit**](1_Java/1_TheJavaProgrammingEnvironment/1_InstallingTheJavaDevelopmentKit.md)
 
-2. **Fundamental Java Structures**
+## 2. Fundamental Java Structures**
 
-    - **2.1** - [**Data Types**](1_Java/2_FundamentalJavaStructures/1_DataTypes.md)
+- **2.1** - [**Data Types**](1_Java/2_FundamentalJavaStructures/1_DataTypes.md)
 
-        - Integer Types
-        - Floating-Point Types
-        - The `char` Type
-        - Unicode and the `char` Type
+    - Integer Types
+    - Floating-Point Types
+    - The `char` Type
+    - Unicode and the `char` Type
 
-    - **2.2** - [**Variables**](1_Java/2_FundamentalJavaStructures/2_Variables.md)
+- **2.2** - [**Variables**](1_Java/2_FundamentalJavaStructures/2_Variables.md)
 
-        - Initializing Variables
+    - Initializing Variables
         - Constants
 
-    - **2.3** - [**Operators**](1_Java/2_FundamentalJavaStructures/3_Operators.md)
+- **2.3** - [**Operators**](1_Java/2_FundamentalJavaStructures/3_Operators.md)
 
         - Mathematical Functions and Constants
         - Conversions between Numeric Types
