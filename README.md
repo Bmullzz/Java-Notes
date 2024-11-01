@@ -6,7 +6,7 @@
 
 2. **Fundamental Java Structures**
 
-    - 2.1 - [Data Types](1_Java/2_FundamentalJavaStructures/1_DataTypes.md)
+    - **2.1** - [**Data Types**](1_Java/2_FundamentalJavaStructures/1_DataTypes.md)
 
         - Integer Types
         - Floating-Point Types
@@ -68,7 +68,7 @@
         - Multidimensional Arrays
         - Ragged Arrays
 
-3. Objects and Classes
+3. **Objects and Classes**
 
     - 3.1 - [Object Oriented Programming](1_Java/3_ObjectsAndClasses/1_ObjectOrientedProgramming.md)
 
