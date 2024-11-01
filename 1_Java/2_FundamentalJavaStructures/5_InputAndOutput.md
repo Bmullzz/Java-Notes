@@ -234,6 +234,71 @@ Flags for `printf`
 | `$`| Specifies the index of the argument to be formatted; for example, `%1$d` `%1$x` prints the first argument in decimal and hexadecimal.        | `159` `9F`   |
 | `<`| Formats the same value as the previous specification; for example, `%d` `%<x` prints the same number in decimal and hexadecimal.           | `159` `9F`   |
 
+In the interest of completeness, we briefly discuss the date and time formatting options of the `printf` method. For new code, you should use the methods of the `java.time` package. But you may encounter the `Date` class and the associated formatting options in legacy code. The format consists of two letters, starting with `t` and ending in one of the letters in the table below. For example,
 
+```Java
+System.out.printf("%tc", newDate());
+```
 
- 
+prints the current date and time in the format
+
+```Java
+Mon Feb 09 18:05:19 PST 2015
+```
+
+As you can see in the table below, some of th eformats yield only a part of a given date -- for example, just he day or just the month. It would be a bit silly if you had to supply the date multiple times to format each part. For that reason, a format string can indicate the _index_ of the argument to be formatted. The index must immediately follow the `%`, and it must be terminated by a `$`. For example,
+
+```Java
+System.out.printf("%1$s %2$tB %2$te, %2$tY", "Due date:", new Date());
+```
+prints
+
+```Java
+Due Date: February 9, 2015
+```
+
+Alternatively, you can use the `<` flag. It indicates that the same argument as in the preceding format specification should be used again. That is, the statement 
+
+```Java
+System.out.printf("%s %tB %<te, %<tY", "Due date:", new Date());
+```
+
+yields the same output as the preceding statement.
+
+Date and Time Conversion Characters:
+
+| Conversion Character           | Type        | Example |
+| ---                            | ---         | ---     |
+| `c` | Complete date and time | `Due Date: February 9, 2015` |
+| `F` | ISO 8601 date          | `2015-02-09` |
+| `D` | U.S. formatted date (month/day/year) | `02/09/2015` |
+| `T` | 24-hour time           | `18:05:19` |
+| `r` | 12-hour time   | `06:05:19 pm` |
+| `R` | 24-hour time, no seconds | `18:05` |
+| `Y` | Four-digit year (with leading zeroes) | `2015` |
+| `y` | Last two digits of the year (with leading zeroes) | `15` |
+| `C` | First two digits of the year (with leading zeroes) | `20`|
+| `B` | Full month name | `February` |
+| `b` or `h` | Abbreviated month name | `Feb` |
+| `m` | Two-digit month (with leading zeroes) | `02` |
+| `d` | Two-digit day (with leading zeroes) | `09` |
+| `e` | Two-digit dat (without leading zeroes) | `9` |
+| `A` | Full weekday name | `Monday` |
+| `a` | Abbreviated weekday name | `mon` |
+| `j` | Three-digit day of the year (with leading zeroes), between `001` and `366` | `069` |
+| `h` | Two-digit hour (with leading zeroes), between `00` and `23` | `18` |
+| `k` | Two-digit hour (without leading zeroes), between `0` and `23` | `18` |
+| `I` | Two-digit hour (with leading zeroes), between `01` and `12` | `06` |
+| `l` | Two-digit hour (without leading zeroes), between `1` and `12` | `6` |
+| `M` | Two-digit minutes (with leading zeroes) | `05` |
+| `S` | Two-digit seconds (with leading zeroes) | `19` |
+| `L` | Three-digit milliseconds (with leading zeroes) | `047` |
+| `N` | Nine-digit nanoseconds (with leading zeroes) | `047000000` |
+| `p` | Morning or afternoon marker | `pm` |
+| `z` | RFC 822 numeric offset from GMT | `-0800` |
+| `Z` | Time zone | `PST` |
+| `s` | Seconds since `1970-01-01 00:00:00 GMT` | `107888431` |
+| `Q` | Milliseconds since `1970-01-01 00:00:00 GMT` | `1078884319047` |
+
+- **CAUTION**: Argument index values start with `1`, not with `0:` `%1$...` formats the first argument. This avoids confusion with the `0` flag.
+
