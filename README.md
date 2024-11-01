@@ -2,7 +2,7 @@
 
 1. **The Java Programming Environment**
 
-    - 1.1 - [Installing the Java Development Kit](1_Java/1_TheJavaProgrammingEnvironment/1_InstallingTheJavaDevelopmentKit.md)
+    - **1.1** - [**Installing the Java Development Kit**](1_Java/1_TheJavaProgrammingEnvironment/1_InstallingTheJavaDevelopmentKit.md)
 
 2. **Fundamental Java Structures**
 
@@ -13,12 +13,12 @@
         - The `char` Type
         - Unicode and the `char` Type
 
-    - 2.2 - [Variables](1_Java/2_FundamentalJavaStructures/2_Variables.md)
+    - **2.2** - [**Variables**](1_Java/2_FundamentalJavaStructures/2_Variables.md)
 
         - Initializing Variables
         - Constants
 
-    - 2.3 - [Operators](1_Java/2_FundamentalJavaStructures/3_Operators.md)
+    - **2.3** - [**Operators**](1_Java/2_FundamentalJavaStructures/3_Operators.md)
 
         - Mathematical Functions and Constants
         - Conversions between Numeric Types
@@ -30,7 +30,7 @@
         - Parentheses and Operator Hierarchy
         - Enumerated Types
 
-    - 2.4 - [Strings](1_Java/2_FundamentalJavaStructures/4_Strings.md)
+    - **2.4** - [**Strings**](1_Java/2_FundamentalJavaStructures/4_Strings.md)
 
         - Substrings
         - Concatenation
@@ -41,13 +41,13 @@
         - The `String` API
         - Building Strings
 
-    - 2.5 - [Input and Output](1_Java/2_FundamentalJavaStructures/5_InputAndOutput.md)
+    - **2.5** - [**Input and Output**](1_Java/2_FundamentalJavaStructures/5_InputAndOutput.md)
 
         - Reading Input
         - Formatting Input
         - File Input and Output
 
-    - 2.6 - [Control Flow](1_Java/2_FundamentalJavaStructures/6_ControlFlow.md)
+    - **2.6** - [**Control Flow**](1_Java/2_FundamentalJavaStructures/6_ControlFlow.md)
 
         - Block Scope
         - Conditional Statements
@@ -56,9 +56,9 @@
         - Multiple Selections -- The `switch` statement
         - Statements That Break Control Flow
 
-    - 2.7 - [Big Numbers](1_Java/2_FundamentalJavaStructures/7_BigNumbers.md)
+    - **2.7** - [**Big Numbers**](1_Java/2_FundamentalJavaStructures/7_BigNumbers.md)
 
-    - 2.8 - [Arrays](1_Java/2_FundamentalJavaStructures/8_Arrays.md)
+    - **2.8** - [**Arrays**](1_Java/2_FundamentalJavaStructures/8_Arrays.md)
 
         - The "for each" Loop
         - Array Initializers and Anonymous Arrays
@@ -70,20 +70,20 @@
 
 3. **Objects and Classes**
 
-    - 3.1 - [Object Oriented Programming](1_Java/3_ObjectsAndClasses/1_ObjectOrientedProgramming.md)
+    - **3.1** - [**Object Oriented Programming**](1_Java/3_ObjectsAndClasses/1_ObjectOrientedProgramming.md)
 
         - Classes
         - Objects
         - Identifying Classes
         - Relationships between Classes
 
-    - 3.2 - [Using Predefined Classes](1_Java/3_ObjectsAndClasses/2_UsingPredefinedClasses.md)
+    - **3.2** - [**Using Predefined Classes**](1_Java/3_ObjectsAndClasses/2_UsingPredefinedClasses.md)
 
         - Objects and Object Variables
         - The `LocalDate` Class of the Java Library
         - Mutator and Accessor Methods
 
-    - 3.3 - [Defining Your Own Classes](1_Java/3_ObjectsAndClasses/3_DefiningYourOwnClasses.md)
+    - **3.3** - [**Defining Your Own Classes**](1_Java/3_ObjectsAndClasses/3_DefiningYourOwnClasses.md)
 
         - An `Employee` Class
         - Use of Multiple Source Files
@@ -95,7 +95,7 @@
         - Private Methods
         - Final Instance Fields
 
-    - 3.4 - [Static Fields and Methods](1_Java/3_ObjectsAndClasses/4_StaticFieldsAndMethods.md)
+    - **3.4** - [**Static Fields and Methods**](1_Java/3_ObjectsAndClasses/4_StaticFieldsAndMethods.md)
 
         - Static Fields
         - Static Constants
@@ -103,9 +103,9 @@
         - Factory Methods
         - The `main` Method
 
-    - 3.5 - [Method Parameters](1_Java/3_ObjectsAndClasses/5_MethodParameters.md)
+    - **3.5** - [**Method Parameters**](1_Java/3_ObjectsAndClasses/5_MethodParameters.md)
 
-    - 3.6 - [Object Construction](1_Java/3_ObjectsAndClasses/6_ObjectConstruction.md)
+    - **3.6** - [**Object Construction**](1_Java/3_ObjectsAndClasses/6_ObjectConstruction.md)
 
         - Overloading
         - Default Field Initialization
@@ -116,18 +116,18 @@
         - Initialization Blocks
         - Object Destruction and the `finalize` Method
 
-    - 3.7 - [Packages](1_Java/3_ObjectsAndClasses/7_Packages.md)
+    - **3.7** - [**Packages**](1_Java/3_ObjectsAndClasses/7_Packages.md)
 
         - Class Importation
         - Static Imports
         - Addition of a Class into a Package
         - Package Scope
 
-    - 3.8 - [The Class Path](1_Java/3_ObjectsAndClasses/8_TheClassPath.md)
+    - **3.8** - [**The Class Path**](1_Java/3_ObjectsAndClasses/8_TheClassPath.md)
 
         - Setting the Class Path
 
-    - 3.9 - [Documentation Comments](1_Java/3_ObjectsAndClasses/9_DocumentationComments.md)
+    - **3.9** - [**Documentation Comments**](1_Java/3_ObjectsAndClasses/9_DocumentationComments.md)
 
         - Comment Insertion
         - Class Comments
@@ -137,4 +137,4 @@
         - Package and Overview Comments
         - Comment Extraction
 
-    - 3.10 - [Class Design Hints](1_Java/3_ObjectsAndClasses/10_ClassDesignHints.md)
+    - **3.10** - [**Class Design Hints**](1_Java/3_ObjectsAndClasses/10_ClassDesignHints.md)
