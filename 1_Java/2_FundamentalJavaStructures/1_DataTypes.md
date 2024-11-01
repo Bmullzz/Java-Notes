@@ -35,7 +35,6 @@ The integer types are numbers without fractional parts. Negative values are allo
 | `short`| 2 bytes             | `-32,768` to `32,767`       |
 | `long` | 8 bytes             | `-9,223,372,036,854,775,808` to `9,223,372,036,854,775,807` |
 | `byte` | 1 byte              | `-128` to `127`             |
-|        |                     |                             |
 
 - `int`
     - For most situations, `int` is the most practical type to use, unless you want represent the population of Earth.
@@ -60,7 +59,6 @@ The floating-point types denote numbers with fractional parts.
 | ---      | ---                 | ---      |
 | `float`  | 4 bytes             | Approximately &pm;3.40282347E (6-7 significant decimal digits)  |
 | `double` | 8 bytes             | Approximately &pm;1.79769313486231570E+308 (15 significant decimal digits) |
-|          |                     |          |
 
 - `float`
     - The precision of `float` is NOT sufficient for many situations.
@@ -119,7 +117,6 @@ Escape sequences for Special Characters:
 | `\"`            | Double quote    | `\u0022`      |
 | `\'`            | Single quote    | `\u0027`      |
 | `\\`            | Backslash       | `\u005c`      |
-|                 |                 |               |
 
 - **CAUTION**: Unicode escape sequences are processed before the code is parsed. For example, "\u0022+\u0022" is _not_ a string consisting of a plus sign surrounded by quotation marks (U+0022). Instead, the `\u0022` are converted into `"` before parsing, yielding `""+""`, or an empty string.
 

@@ -233,7 +233,7 @@ Flags for `printf`
 |`#` (for `x` or `o`)| Adds `0x` or `0` prefix               | `0xcafe`     |
 | `$`| Specifies the index of the argument to be formatted; for example, `%1$d` `%1$x` prints the first argument in decimal and hexadecimal.        | `159` `9F`   |
 | `<`| Formats the same value as the previous specification; for example, `%d` `%<x` prints the same number in decimal and hexadecimal.           | `159` `9F`   |
-|            |                                               |              |
+
 
 
  
