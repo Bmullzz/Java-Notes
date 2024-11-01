@@ -1,2 +1,3 @@
-# Java-Notes
-This repository contains notes for Java, the Spring Framework, and any related technologies or concepts.
+# Java
+
+[Data Types](1_Java/2_FundamentalJavaStructures/1_DataTypes.md)
