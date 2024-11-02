@@ -302,3 +302,17 @@ Date and Time Conversion Characters:
 
 - **CAUTION**: Argument index values start with `1`, not with `0:` `%1$...` formats the first argument. This avoids confusion with the `0` flag.
 
+- NOTE: The formatting of numbers is _locale specific_. For example, in germany, the group separator is a period, not a comma, and Monday is formatted as Montag. 
+
+## File Input and Output
+
+To read froma file, construct a `scanner` object like this:
+
+```Java
+Scanner in = new Scanner(Paths.get("myfile.txt), "UTF-8");
+```
+
+If the file name contains backslashes, remember to escape each of them with and additional backslash: `"c:\\mydirectory\\myfile.txt"`.
+
+- NOTE: Here, we specify the UTF-8 character encoding, which is common (but not universal) for files on the internet. You need to know the character encoding when you read a text file. If you omit the character encoding, the the "default encoding" of the computer running the Java program is used. That is not a good idea--the program might act differently depending on where it is run.
+
