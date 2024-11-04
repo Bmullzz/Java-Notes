@@ -271,3 +271,31 @@ import java.util.*;
 ```
 
 ## Determinate Loops
+
+The `for` loop is a general construct to support iteration controlled by a counter or similar variable that is updated after every iteration. The following loop prints the numbers from `1` to `10` on the screen.
+
+```Java
+for (int i = 1; i <= 10; i++)
+    system.out.println(i);
+```
+
+The first slot of the `for` statement usually holds the counter initialization. The second slot gives the condition that will be tested before each new pass through the loop, and the third slot specifies how to update the counter.
+
+Although Java, like C++, allows almost any expression in the various slots of a `for` loop, it is an unwritten rule of good taste that the three slots should only initialize, test, and update the same counter variable. One can write very obscure loops by disregarding this rule.
+
+Even within the bounds of good taste, much is possible. For example, you can have loops that count down:
+
+```Java
+for (int i = 10; i > 0; i--) 
+    System.out.println("Counting down ... " + i);
+System.out.println("Blastoff");
+```
+
+- **CAUTION**: Be careful about testing for equality of floating-point numbers in loops. A `for` loop like this one
+
+```Java
+for (double x = 0; x != 10; x += 0.1) ...
+```
+
+- might never end. Because of the roundoff errors, the final value might not be reached exactly. In this example, `x` jumps from `9.99999999999998` to `10.09999999999998` because there is no exact binary representation for `0.1`.
+
