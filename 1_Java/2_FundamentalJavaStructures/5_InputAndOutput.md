@@ -3,7 +3,7 @@
 - [Input and Output](#input-and-output)
 - [Reading Input](#reading-input)
 - [Formatting Output](#formatting-output)
-- [File Input and Output]()
+- [File Input and Output](#file-input-and-output)
 
 ## Input and Output
 
@@ -316,3 +316,56 @@ If the file name contains backslashes, remember to escape each of them with and 
 
 - NOTE: Here, we specify the UTF-8 character encoding, which is common (but not universal) for files on the internet. You need to know the character encoding when you read a text file. If you omit the character encoding, the the "default encoding" of the computer running the Java program is used. That is not a good idea--the program might act differently depending on where it is run.
 
+Now you can read from the file, using any of the `Scanner` methods that we already described. 
+
+To write to a file, construct a `PrintWriter` object. In the constructor, supply the file name and the character encoding:
+
+```Java
+PrintWriter out = new PrintWriter("myFile.txt", "UTF-8");
+```
+
+If the file does not exist, it is created. You can use the `print`, `println`, and `printf` commands as you did when printing to `System.out`.
+
+- **CAUTION**: You can construct a `Scanner` with a string parameter, but the scanner interprets the string as data, not a file name. For example, if you call
+
+```Java
+Scanner in = new Scanner("myfile.txt"); // ERROR?
+```
+
+- then the scanner will see ten characters of data: `m`, `y`, `f`, and so on. That is probably not what was intended in this case.
+
+As you just saw, you can access files just as easily as you can using `System.in` and `System.out`. There is just one catch: If you construct a `Scanner` with a file that does not exist or a `PrintWriter` witha file name that cannot be created, an exception occurs. The Java compiler considers these exceptions to be more serious than a "divide by zero" exception, for example. In a later section, you will learn various ways of handling exceptions. For now, you should simply tell the compiler that you are aware of the possibility of an "input/output" exception. You do this by tagging the `main` method with a `throws` clause, like this:
+
+```Java
+public static void main(String[] args) throws IOException {
+    Scanner in = new Scanner(Paths.get("myfile.txt"), "UTF-8");
+}
+```
+
+You have now seen how to read and write files that contain textual data. For more advanced topics, such as dealing with different character encodings, processing binary data, reading directories, and writing zip files, see the next book.
+
+- **NOTE**: When you launch a program from a command shell, you can use the redirection syntax of your shell and attach any file to `System.in` and `System.out`:
+
+```terminal
+java MyProg < myfile.txt > output.txt
+```
+
+-Then you need not worry about handling the `IOException`.
+
+- `java.util.Scanner` 5.0
+
+    - `Scanner(Path p, String encoding)`
+        - constructs a `Scanner` that reads data from the given path, using the given character encoding.
+
+    - `Scanner(String data)`
+        - constructs a `Scanner` that reads data from the given string.
+
+- `java.io.PrintWriter` 1.1
+
+    - `PrintWriter(String fileName)`
+        - constructs a `PrintWriter` that writes data to the file with the given file name.
+
+- `java.nio.file.Paths` 7
+
+    - `static Path get(String pathname)`
+        - constructs a `Path` from the given path name.
