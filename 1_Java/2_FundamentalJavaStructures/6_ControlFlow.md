@@ -4,7 +4,7 @@
 - [Conditional Statements](#conditional-statements)
 - [Loops](#loops)
 - [Determinate Loops](#determinate-loops)
-- [Multiple Selections - The `switch` Statement]()
+- [Multiple Selections - The `switch` Statement](#multiple-selections---the-switch-statement)
 - [Statements That Break Control Flow]()
 
 Java, just like any programming language, supports both conditional statements and loops to determine control flow. We will start with the conditional statements, then move on to loops, to end with the somewhat cumbersome `switch` statement that you can use to test for many values of a single expression.
@@ -298,4 +298,106 @@ for (double x = 0; x != 10; x += 0.1) ...
 ```
 
 - might never end. Because of the roundoff errors, the final value might not be reached exactly. In this example, `x` jumps from `9.99999999999998` to `10.09999999999998` because there is no exact binary representation for `0.1`.
+
+When you declare a variable in the first slot of the `for` statement, the scope of that variable extends until the end of the body of the `for` loop.
+
+```Java
+for (int i = 1; i <= 10; i++) {
+    ...
+}
+// i no longer defined here
+```
+
+In particular, if you define a variable inside a `for` statement, you cannot use its value outside the loop. Therefore, if you wish to use the final value of a loop counter outside the `for` loop, be sure to declare it outside the loop header.
+
+```Java
+int i;
+for (i = 1; i <= 10; i++) {
+    ...
+}
+// i is still defined here
+```
+
+On the other hand, you can define variables with the same name in separate `for` loops:
+
+```Java
+for (int i = 1; i <= 10; i++) {
+    ...
+}
+
+for (int i = 11; i <= 20; i++) { // OK  to define another variable named i
+    ...
+}
+```
+
+A `for` loop is merely a convenient shortcut for a `while` loop. For example,
+
+```Java
+for (int i = 10; i > 0; i--)
+    System.out.println(""Counting down... " + i);
+```
+
+can be rewritten as
+
+```Java
+int i = 10;
+while (i > 0) {
+    System.out.println("Counting down... " + i);
+    i--;
+}
+```
+
+[Lisitng 3.5](#listing-35) shows a typical example of a `for` loop.
+
+The program computes the odds of winning a lottery. For example, if you must pick six numbers from the numbers `1` to `50` to win, then there are $(50\times49\times48\times47\times46\times45)/(1\times2 \times3\times4\times5\times6)$ possible outcomes, so your chance is `1` in `15,890,700`. Good luck!
+
+In general, if you pick `k` numbers out of `n`, there are 
+
+$$\frac{n\times(n-1)\times(n-2)\times...\times(n-k+1)}{1\times2\times3\times4\times...\times k}$$
+
+possible outcomes. The following `for` loop computes this value:
+
+```Java
+int lotteryOdds = 1;
+for (int i = 1; i <= k; i++)
+    lotteryOdds = lotteryOdds * (n - i + 1) / i;
+```
+
+### Listing 3.5
+
+- `LotteryOdds/LotteryOdds.java`
+
+```Java
+import java.util.*;
+
+/**
+ * This program demonstrates a for loop.
+ * @version 1.20 2004-02-10
+ * @author Cay Horstman
+ * */
+public class LotteryOdds {
+    public static void main(String[] args) {
+        Scanner in = new Scanner(System.in);
+
+        System.out.print("How many numbers do you need to draw? ");
+        int k = in.nextInt();
+
+        System.out.print("What is the highest number you can draw? ");
+        int n = in.nextInt();
+
+        /**
+         * compute binomial coefficient n*(n-1)*(n-2)*...*(n-k+1)/(1*2*3*...*k)
+         **/
+
+        int lotteryOdds = 1;
+        for (int i = 1; i <= k; i++) {
+            lotteryOdds = lotteryOdds * (n - i + 1) / i;
+        }
+
+        System.out.println("Your odds are 1 in " + lotteryOdds + ". Good luck!");
+    }
+}
+```
+
+## Multiple Selections - The `switch` Statement
 
