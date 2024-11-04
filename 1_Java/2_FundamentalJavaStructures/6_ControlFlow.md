@@ -5,7 +5,7 @@
 - [Loops](#loops)
 - [Determinate Loops](#determinate-loops)
 - [Multiple Selections - The `switch` Statement](#multiple-selections---the-switch-statement)
-- [Statements That Break Control Flow]()
+- [Statements That Break Control Flow](#statements-that-break-control-flow)
 
 Java, just like any programming language, supports both conditional statements and loops to determine control flow. We will start with the conditional statements, then move on to loops, to end with the somewhat cumbersome `switch` statement that you can use to test for many values of a single expression.
 
@@ -400,4 +400,179 @@ public class LotteryOdds {
 ```
 
 ## Multiple Selections - The `switch` Statement
+
+The `if`/`else` construct can be cumbersome when you have to deal with multiple selections with many alternatives. Java has a `switch` statement that is exactly like the `switch` statement in C and C++, warts and all.
+
+For example, if you set up a menu system with four alternatives like that in a previous section, you could use code that looks like this:
+
+```Java
+Scanner in = new Scanner(System.in);
+System.out.print("Select an option (1, 2, 3, 4) ");
+int choice = in.nextInt();
+switch (choice) {
+    
+    case 1:
+        ...
+        break;
+    case 2:
+        ...
+        break;
+    case 3:
+        ...
+        break;
+    case 4:
+        ...
+        break;
+    default:
+        // bad input
+        ...
+        break;
+}
+```
+
+Execution starts at the `case` label that matches the value on which the selection is performed and continues until the next `break` or the end of the switch. If none of the case labels match, then the `default` clause is executed, if it is present.
+
+- **CAUTION**: It is possible for multiple alternatives to be triggered. If you forget to add a `break` at the end of an alternative, execution falls through to the next alternative! This behavior is plainly dangerous and a common casue for errors. For that reason, we never use the `switch` statement in our programs.
+
+- If you like the `switch` statement better than we do, consider compiling your code with the `-Xlint:fallthrough Test.java` option, like this:
+
+```terminal
+javac -Xlint:fallthrough Test.java
+```
+- Then the compiler will issue a warning whenever an alternative does not end with a `break` statement.
+
+- If you actually want to use the fallthrough behavior, tag the surrounding method with the annotation `@SuppressWarnings("fallthrough")`. Then no warnings will be generated for that method. (An annotation is a mechanism for supplying information to the compiler or a tool that processes Java source or class files.)
+
+A `case` label can be 
+
+- A constant expression of type `char`, `byte`, `short`, or `int`
+- An enumerated constant
+- Starting ith Java SE 7, a string literal
+
+For example,
+
+```Java
+String input = ...;
+switch (input.toLowerCase()) {
+    case "yes": // OK since Java SE 7\
+        ...
+        break;
+    ...
+}
+```
+
+When you use the `switch` statement with enumerated constants, you need not supply the name of the enumeration in each label - it is deduced from the `switch` value. For example,
+
+```Java
+Size sz = ...;
+switch (sz) {
+    case SMALL: // no need to use Size.SMALL
+        ...
+        break;
+    ...
+}
+```
+
+## Statements That Break Control Flow
+
+Although the designers of Java kept `goto` as a reserved word, they decided not to include it in the language. In general, `goto` statements are considered poor style. Some programmers feel the anti-`goto` forces have gone too far (see, for example, the famous article of Donald Knuth called "Structured Programming with `goto` statements"). They argue that unrestricted use of `goto` is error-prone but that an occasional jump _out of loop_ is beneficial. The Java designers agreed and even added a new statement, the labeled break, to support this programming style.
+
+Let us first look at the unlabeled `break` statement. The same `break` statement that you use to exit a `switch` can also be used to break out of a loop. For example:
+
+```Java
+while (years <= 100) {
+    balance += payment;
+    double interest = balance * interestRate / 100;
+    balance += interest;
+    if (balance >= goal) break;
+    years++;
+}
+```
+
+Now the loop is exited if either `years > 100` occurs at the top of the loop or `balance >= goal` occurs in the middle of the loop. Of course, you could have computed the same value for `years` without a `break`, like this:
+
+```Java
+while (years <= 100 && balance < goal) {
+    balance += payment;
+    double interest = balance * interestRate / 100;
+    balance += interest;
+    if (balance < goal)
+        years++;
+}
+```
+
+But note that the test `balance < goal` is repeated twice in this version. To avoid this repeated test, some programmers prefer the `break` statement.
+
+Unlike C++, Java also offers a _labeled break_ statement that lets you break out of multiple nested loops. Occasionally something weird happens inside a deeply nested loop. In that case, you may want to break completely out of all the nested loops. It is inconvenient to program that simply by adding extra conditions to the various loop tests.
+
+Here's an example that shows the break statement at work. Notice that the label must procede the outermost loop out of which you want to break. It also must be followed by a colon.
+
+```Java
+Scanner in = new Scanner(System.in);
+int n;
+read_data:
+while (...) { // this loop statement is tagged with the label 
+    ...
+    for (...) { // this inner loop is not labeled
+        System.out.print("Enter a number >= 0: ");
+        n = in.nextInt();
+        if (n < 0) // should never happen-can't go on
+            break read_data;
+            // break out of read_data loop
+        ...
+    }
+}
+// this statement is executed immediately after the labeled break
+if (n < 0) { // check for bad situation
+    // deal with bad precision
+} else {
+    // carry out normal processing
+}
+```
+
+IF there is a bad input, the labeled break moves past the end of the labeled block. As with any use of the `break` statement, you then need to test whether the loop exited normally or as a result of a break.
+
+- **NOTE**: Curiously, you can apply a label to any statement, even an `if` statement or a block statement, like this:
+
+```Java
+label: {
+    ...
+    if (condition) break label; // exits block
+    ...
+}
+// jumps here when the break statement executes
+```
+
+- Thus, if you are lusting after a `goto` and if you can place a block that ends just before the place to which you want to jump, you can use a `break` statement! Naturally, we don't recommend this approach. Note, however, that you can only jump _out of_ a block, never _into_ a block.
+
+Finally, there is a `continue` statement that, like the `break` statement, breaks the regular flow of control. The `continue` statement transfers control to the header of the innermost enclosing loop. Here is an example:
+
+```Java
+Scanner in = new Scanner(System.in);
+while (sum < goal) {
+    System.out.print("Enter a number: ");
+    n = in.nextInt();
+    if (n < 0) continue;
+    sum += n; // not executed if n < 0
+}
+```
+
+If `n < 0`, then the `continue` statement jumps immediately to the loop header, skipping the remainder of the current iteration.
+
+If the `continue` statement is used in a `for` loop, it jumps to the "update" part of the `for` loop. For example:
+
+```Java
+for (count = 1; count <= 100; count++) {
+    System.out.print("Enter a number, -1 to quit: ");
+    n = in.nextInt();
+    if (n < 0) continue;
+    sum += n; // not executed if n < 0
+}
+```
+
+If `n < 0`, then the `continue` statement jumps to the `count++` statement.
+
+There is also a labeled form of the `continue` statement that jumps to the header of the loop with the matching label.
+
+- **Tip**: Many programmers find the `break` and `continue` statements confusing. These statements are entirely optional - you can always express the same logic without them. In this book, we never use `break` or `continue`.
 
