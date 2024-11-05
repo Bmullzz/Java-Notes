@@ -75,3 +75,37 @@ Once you create an array, you cannot change its size (although you can, of cours
 
 ## The "for each" Loop
 
+Java has a powerful looping construct that allows you to loop through each element in an array (or any other collection of elements) without having to fus with index values.
+
+The _enhanced_ `for` loop
+
+```Java
+for (variable : collection) statement
+```
+
+sets the given variable to each element of the collection and then executes the statement (which of course, may be a block). The _collection_ expression must be an array or an object of a class that implements the `Iterable` interface, such as `ArrayList`. We discuss array lists in Chapter 5 and the `Iterable` interface in Chapter 9.
+
+For example,
+
+```Java
+for (int element : a)
+    System.out.println(element);
+```
+
+prints each element of the array `a` on a separate line.
+
+You should read this loop as "for each `element` in `a`". The designers of the Java language considered using keywords, such as `foreach` and `in`. But this loop was a late addition to the Java language, and in th end nobody wanted to break the old code that already contained methods or variables with these names (such as `System.in`).
+
+Of course, you could achieve the same effect with a traditional `for` loop:
+
+```Java
+for (int i = 0; i < a.length; i++) {
+    System.out.println(a[i]);
+}
+```
+
+However, the "for each" loop is more concise and less error-prone, as you don't have to worry about those pesky start and end values.
+
+- **NOTE**: the loop variable of the "for each" loop traverses the _elements_ of the array, not the index values.
+
+The "for each"
