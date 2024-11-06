@@ -1,8 +1,8 @@
 # Arrays
 
 - [The "for each" Loop](#the-for-each-loop)
-- [Array Initalizers and Anonymous Arrays]()
-- [Array Copying]()
+- [Array Initalizers and Anonymous Arrays](#array-initializers-and-anonymous-arrays)
+- [Array Copying](#array-copying)
 - [Command-Line Parameters]()
 - [Array Sorting]()
 - [Multidimensional Arrays]()
@@ -108,4 +108,49 @@ However, the "for each" loop is more concise and less error-prone, as you don't 
 
 - **NOTE**: the loop variable of the "for each" loop traverses the _elements_ of the array, not the index values.
 
-The "for each"
+The "for each" loop is pleasant improvement over the traditional loop if you need to process all elements in a collection. However, there are still plenty of opportunities to use the traditional `for` loop. For example, you might not want to traverse the entire collection, or you may need the index value inside the loop. 
+
+- **TIP**: There is an even easier way to print all values of an array, using the `toString` method of the `Arrays` class. The call `Arrays.toString(a)` returns a string containing the array elements, enclosed in brackets and separated by commas, such as `"[2, 3, 5, 7, 11, 13]"`. To print the array, simply call
+
+```Java
+System.out.println(Arrays.toString(a));
+```
+
+## Array Initializers and Anonymous Arrays
+
+Java has a shortcut for creating an array object and supplying initial values at the same time. Here's an example of the syntax at work:
+
+```Java
+int[] smallPrimes = { 2, 3, 5, 7, 11, 13 };
+```
+
+Notice that you do not call `new` when you use this syntax.
+
+You can even initialize an _anonymous array_:
+
+```Java
+new int[] { 17, 19, 23, 29, 31, 37 };
+```
+
+This expression allocates a new array and fills it with the values inside the braces. It counts the number of initial values and sets the array size accordingly. You can use this syntax to reinitialize an array without creating a new variable. For example,
+
+```Java
+smallPrimes = new int[] { 17, 19, 23, 29, 31, 37 };
+```
+
+is shorthand for 
+
+```Java
+int[] anonymous = { 17, 19, 23, 29, 31, 37 };
+smallPrimes = anonymous;
+```
+
+- **Note**: It is legal to have arrays of length `0`. Such an array can be useful if you write a method that computes an array result and the result happens to be empty. Construct an array of length `0` as 
+
+```Java
+new elementType[0]
+```
+
+Note that an array of length `0` is not the same as `null`.
+
+## Array Copying
