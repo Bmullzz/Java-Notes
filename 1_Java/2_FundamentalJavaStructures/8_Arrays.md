@@ -154,3 +154,10 @@ new elementType[0]
 Note that an array of length `0` is not the same as `null`.
 
 ## Array Copying
+
+You can copy one array variable into another, but then _both variables refer to the same array_:
+
+```Java
+int[] luckyNumbers = smallPrimes;
+luckyNumbers[5] = 12; // now smallPrimes[5] is also 12
+```
