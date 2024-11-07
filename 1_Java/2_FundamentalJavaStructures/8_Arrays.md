@@ -429,3 +429,158 @@ public class LotteryDrawing {
 
 ## Multidimensional Arrays
 
+Multidimensional arrays use more than one index to access array elements. They are used for tables and other more complex arrangements. You can safely skip this section until you have a need for this storage mechanism.
+
+Suppose you want to make a table of numbers that shows how much an investment of $10,000 will grow under different interest rate scenarios in which interest is paid annually and reinvested ([Table 3.8](#table-38---growth-of-an-investment-at-different-interest-rates)).
+
+You can store this information in a two-dimensional array (matrix), which we call `balances`.
+
+Declaring a two-dimensional array in Java is simple enough. For example:
+
+```Java
+double[][] balances;
+```
+
+### Table 3.8 - Growth of an Investment at Different Interest Rates
+
+| **10%**   | **11%**   | **12%**   | **13%**   | **14%**   | **15%**   |
+| ---       | ---       | ---       | ---       | ---       | ---       |
+| 10,000.00 | 10,000.00 | 10,000.00 | 10,000.00 | 10,000.00 | 10,000.00 |
+| 11,000.00 | 11,100.00 | 11,200.00 | 11,300.00 | 11,400.00 | 11,500.00 |
+| 12,100.00 | 12,321.00 | 12,544.00 | 12,769.00 | 12,996.00 | 13,225.00 |
+| 13,310.00 | 13,676.31 | 14,049.28 | 14,428.97 | 14,815.44 | 15,208.75 |
+| 14,641.00 | 15,180.70 | 15,735.19 | 16,304.74 | 16,889.60 | 17,490.06 |
+| 16,105.10 | 16,850.58 | 17,623.42 | 18,424.35 | 19,254.15 | 20,113.57 |
+| 17,715.61 | 18,704.15 | 19,738.23 | 20,819.52 | 21,949.73 | 23,130.61 |
+| 19,487.17 | 20,761.60 | 22,106.81 | 23,526.05 | 25,022.69 | 26,600.20 |
+| 21,435.89 | 23,045.38 | 24,759.63 | 26,584.44 | 28,525.86 | 30,590.23 |
+| 23,579.48 | 25,580.37 | 27,730.79 | 30,040.42 | 32,519.49 | 35,178.76 |
+
+You cannot use the array until you initialize it. In this case, you can do the initialization as follows:
+
+```Java
+balances = new double[NYEARS][NRATES];
+```
+
+In other cases, if you know the array elements, you can use a shorthand notation for initializing a multidimensional array without a call to `new`. For example:
+
+```Java
+in[][] magicSquare = 
+    {
+        {16, 3, 2, 13},
+        {5, 10, 11, 8},
+        {9, 6, 7, 12},
+        {4, 15, 14, 1}
+    };
+```
+
+Once the array is initialized, you can access individual elements by supplying two pairs of brackets - for example, `balances[i][j]`.
+
+The example program stores a one-dimensional array `interest` of interest rates and a two-dimensional array `balances` of account balances, one for each year and interest rate. We initialize the first row of the array with the initial balance:
+
+```Java
+for (int j = 0; j < balances[0].length; j++) {
+    balances[0][j] = 10000;
+}
+```
+
+Then we compute the other rows, as follows:
+
+```Java
+for (int i = 1; i < balances.length; i++) {
+    for (int j = 0; j < balances[i].length; j++) {
+        double oldBalance = balances[i - 1][j];
+        double interest = ...;
+        balances[i][j] = oldBalance + interest;
+    }
+}
+```
+
+[Listing 3.8](#listing-38) shows the full program.
+
+- **Notes**: A "for each" loop does not automatically loop through all elements in a two-dimensional array. Instead, it loops through the rows, which are themselves one-dimensional arrays. To visit all elements of a two-dimensional array `a`, nest two loops like this:
+
+    ```Java
+    for (double[] row : a) {
+        for (double[] value : row) {
+            // do something with value
+        }
+    }
+    ```
+
+- **Tip**: To print out a quick-and-dirty list of the elements of a two-dimensional array, call
+
+    ```Java
+    System.out.println(Arrays.deepToString(a));
+    ```
+
+    The output is formatted like this:
+
+    ```Java
+    [[16, 3, 2, 13], [5, 10, 11, 8], [9, 6, 7, 12], [4, 15, 14, 1]]
+    ```
+
+### Listing 3.8
+
+- `CompoundInterest/CompoundInterest.java`
+
+```Java
+/**
+ * This program shows how to store tabular data in a 2D array.
+ * @version 1.40 2004-02-10
+ * @author Cay Horstmann
+ **/
+
+public class CompundInterest {
+
+    public static void main(String[] args) {
+        final double STARTRATE = 10;
+        final int NRATES = 6;
+        final int NYEARS = 10;
+
+        // set interest rates to 10 ... 15%
+        double[] interestRate = new double[NRATES];
+        for (int j = 0; j < interestRate.length; j++) {
+            interestRates[j] = (STARTRATE + j) / 100.0;
+        }
+
+        double[][] balances = new double[NYEARS][NRATES];
+
+        // set initial balances to 10000
+        for (int j = 0; j < balances[0].length;) {
+            balances[0][j] = 10000;
+        }
+
+        // compute interest rate for future years
+        for (int i = 1; i < balances.length; i++) {
+            for ( int j = 0; j < balances[i].length; j++) {
+
+                // get last year's balances from previous row
+                double oldBalance = balances[i - 1][j];
+
+                // compute interest
+                double interest = oldBalance * interestRate[j];
+
+                // compute this year's balances
+                balances[i][j] = oldBalance + interest;
+            }
+        }
+
+        // print one row of interest rates
+        for (int j = 0; j < interestRate.length; j++) {
+            System.out.printf("%9.0f%%", 100 * interestRate[j]);
+        }
+
+        System.out.println();
+
+        // print out balance table
+        for (double[] row : balances) {
+            // print table row
+            for (double b : row) {
+                System.out.printf("%10.2f", b);
+            }
+            System.out.println()
+        }
+    }
+}
+```
