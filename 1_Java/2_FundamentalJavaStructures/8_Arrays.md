@@ -6,7 +6,7 @@
 - [Command-Line Parameters](#command-line-parameters)
 - [Array Sorting](#array-sorting)
 - [Multidimensional Arrays](#multidimensional-arrays)
-- [Ragged Arrays]()
+- [Ragged Arrays](#ragged-arrays)
 
 An array is a data structure that stores a collection of values of the same type. You access each individual value through integer _index_. For example, if `a` is an array of integers, then `a[i]` is the `i`th integer in the array.
 
@@ -584,3 +584,139 @@ public class CompundInterest {
     }
 }
 ```
+
+## Ragged Arrays
+
+So far, what you have seen is not too different from other programming languages. But there is actually something subtle going on behind the scenes that you can sometimes turn to your advantage: Java has _no_ multidimensional arrays at all, only one-dimensional arrays. Multidimensional arrays are faked as "arrays of arrays."
+
+For example, the `balances` array in the preceding example is actually an array that contains ten elements, each of which is an array of six floating-point numbers.
+
+The expression `balances[i]` refers to the `i`th subarray - that is, the `i`th row of the table. It is itself an array, and `balances[i][j]` refers to the `j`th element of that array.
+
+Since rows of arrays are individually accessible, you can actually swap them!
+
+```Java
+double[] temp = balances[i];
+balances[i] = balances[i + 1];
+balances[i + 1] = temp;
+```
+
+It is also easy to make "ragged" arrays - that is, arrays in which different rows have different lengths. Here is the standard example. Let us make an array in which the element of row `i` and column `j` equals the number of possible outcomes of a "choose `j` numbers from `i` numbers" lottery.
+
+```Java
+1
+1 1
+1 2 1
+1 3 3 1
+1 4 6 4 1
+1 5 10 10 5 1
+1 6 15 20 15 6 1
+```
+
+As `j` can never be larger than `i`, the matrix is triangular. The `i`th row has `i + 1` elements. (We allow choosing `0` elements; there is one way to make such a choice.) To build this ragged array, first allocate the array holding the rows.
+
+```Java
+int[][] odds = new int[NMAX + 1][];
+```
+
+Next, allocate the rows.
+
+```Java
+for (int n = 0; n <= NMAX; n++) {
+    odds[n] = new int[n + 1];
+}
+```
+
+Now that the array is allocated, we can access the elements in the normal way, provided we do not overstep the bounds.
+
+```Java
+for (int n = 0; n < odds.length; n++) {
+    for (int k = 0; k < odds[n].length; k++) {
+        // compute lotteryOdds
+        ...
+        odds[n][k] = lotteryOdds;
+    }
+}
+```
+
+[Listing 3.9](#listing-39) gives the complete program.
+
+- **C++ Note**: In C++, the Java declaration
+
+    ```Java
+    double[][] balances = new double[10][6]; // Java
+    ```
+
+    is not the same as 
+
+    ```C++
+    double balances[10][6]; // C++
+    ```
+
+    or even
+
+    ```C++
+    double (*balances)[6] = new double[10][6]; // C++
+    ```
+
+    Instead, an array of ten pointers is allocated:
+
+    ```C++
+    double** balances = new double*[10]; // C++
+    ```
+
+    Then, each element in the pointer array is filled with an array of six numbers:
+
+    ```C++
+    for (i = 0; i < 10; i++) 
+        balances[i] = new double[6];
+    ```
+
+    Mercifully, this loop is automatic when you ask for a `new double[10][6]`. When you want ragged arrays, you allocate the row arrays separately.
+
+### Listing 3.9
+
+- `LotteryArray/LotteryArray.java`
+
+```Java
+/**
+* This program demonstrates a triangular array.
+* @version 1.20 2004-02-10
+* @author Cay Horstmann
+**/
+public class LotteryArray {
+    public static void main(String[] args) {
+        final int NMAX = 10;
+
+        // allocate triangular array
+        int[][] odds = new int[NMAX + 1][];
+        for (int n = 0; n <= NMAX; n++) {
+            odds[n] = new int[n + 1];
+        }
+
+        // fill triangular array
+        for (int n = 0; n < odds[n].length; n++) {
+            for (int k = 0; k < odds[n].length; k++) {
+                /*
+                * compute binomial coefficient n*(n-1)*(n-2)*...*(n-k+1)/(1*2*3*...*k)
+                */
+               int lotteryOdds = 1;
+               for (int i = 1; i <= k; i++) {
+                    lotteryOdds = lotteryOdds * (n - i + 1) / i;
+               }
+               odds[n][k] = lotteryOdds
+            }
+        }
+
+        // print triangular array
+        for (int[] row : odds) {
+            for (int odd : row) {
+                System.out.printf("%4d", odd);
+            }
+            System.out.println();
+        }
+    }
+}
+```
+
+You have now seen the fundamental programming structures of the Java language. The next chapter covers object-oriented programming structures in Java.
