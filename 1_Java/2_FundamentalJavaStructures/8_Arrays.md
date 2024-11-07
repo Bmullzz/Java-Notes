@@ -161,3 +161,92 @@ You can copy one array variable into another, but then _both variables refer to 
 int[] luckyNumbers = smallPrimes;
 luckyNumbers[5] = 12; // now smallPrimes[5] is also 12
 ```
+
+If you want to copy all values of one array into a new array, you use the `copyOf` method in the `Arrays` class:
+
+```Java
+int[] copiedLuckyNumbers = Arrays.copyOf(luckyNumbers, luckyNumbers.length);
+```
+
+The second parameter is the length if the new array. A common use of this method is to increase the size of an array:
+
+```Java
+luckyNumbers = Arrays.copyOf(luckyNumbers, 2 * luckyNumbers.length);
+```
+
+The additional elements are filled with `0` if the array contains numbers, `false` if the array contains `boolean` values. Conversly, if the length is less than the length of the original array, only the initial values are copied.
+
+- **C++ Note**: A Java array is quite different from a C++ array on the stack. It is, however, essentially the same as a pointer to an array allocated on the _heap_. That is,
+
+    ```Java
+    int[] a = new int[100]; // java
+    ```
+
+    is not the same as 
+
+    ```C++
+    int[100]; // C++
+    ```
+
+    but rather
+
+    ```C++
+    int* a = new int[100]; // C++
+    ```
+
+    In Java, the `[]` operator is predefined to perform _bounds checking_. Furthermore, there is no pointer arithmetic - you can't increment `a` to point to the next element in the array. 
+
+## Command-Line Parameters
+
+You have already seen one example of a Java array repeated quite a few times. Every Java program has a `main` method with a `String[] args` parameter. This parameter indicates that the `main` method receives an array of strings - namely, the arguments specified on the command line.
+
+For example, consider this program:
+
+```Java
+public class Message {
+
+    public static void main(String[] args) {
+
+        if (args.length == 0 || args[0].equals("-h")) {
+            System.out.print("Hello");
+        } else if {
+            System.out.print("Goodbye,");
+        }
+        // print the other command-line arguments
+        for (int i = 1; i < args.length; i++) {
+            System.out.print(" " + args[i]);
+        }
+        System.out.println("!");
+    }
+}
+```
+
+If the program is called as
+
+```terminal
+java Message -g cruel world
+```
+
+then the args array has the following contents:
+
+```Java
+args[0]: "-g"
+args[1]: "cruel"
+args[2]: "world"
+```
+
+The program prints the message
+
+```Terminal
+Goodbye, cruel world!
+```
+
+- **C++ Note**: In the `main` method of a Java program, the name of the program is not stored in the `args` array. For example, when you start up a program as 
+
+    ```Terminal
+    java Message -h world
+    ```
+    from the command line, then `args[0]` will be `"-h"` and not `"Message"` or `"java"`.
+
+## Array Sorting
+
