@@ -3,8 +3,8 @@
 - [The "for each" Loop](#the-for-each-loop)
 - [Array Initalizers and Anonymous Arrays](#array-initializers-and-anonymous-arrays)
 - [Array Copying](#array-copying)
-- [Command-Line Parameters]()
-- [Array Sorting]()
+- [Command-Line Parameters](#command-line-parameters)
+- [Array Sorting](#array-sorting)
 - [Multidimensional Arrays]()
 - [Ragged Arrays]()
 
@@ -250,3 +250,117 @@ Goodbye, cruel world!
 
 ## Array Sorting
 
+To sort an array of numbers, you can use one of the `sort` methods in the `Arrays` class:
+
+```Java
+int[] a = new int[10000];
+...
+Arrays.sort(a);
+```
+
+This method uses a tuned version of the QuickSort algorithm that is claimed to be very efficient on most data sets. The `Arrays` class provides several other convenience methods for arrays that are included in the API notes at the end of this section.
+
+The program in [Listing 3.7](#listing-37) puts arrays to work. This program draws a random combination of numbers for a lottery game. For example, if you play a "choose 6 numbers from 49" lottery, the program might print this:
+
+```Terminal
+Bet the following combination. It'll make you rich!
+    4
+    7
+    8
+    19
+    30
+    44
+```
+
+To select such a random set of numbers, we first fill an array `numbers` with the values `1, 2,..., n`:
+
+```Java
+int[] numbers = new int[n];
+for (int i = 0; i < numbers.length; i++) {
+    numbers[i] = i + 1;
+}
+```
+
+A second array holds the numbers to be drawn: 
+
+```Java
+int[] result = new int[k];
+```
+
+Now we draw `k` numbers. The `Math.random` method returns a random floating-point number that is between `0` (inclusive) and `1` (exclusive). By multiplying the result with `n`, we obtain a random number between `0` and `n - 1`.
+
+```Java
+int r = (int) (Math.random() * n);
+```
+
+We set the `i`th result to be the number at that index. Initially, that is just `r + 1`, but as you'll see presently, the contents of the `numbers` array are changed after each draw.
+
+```Java
+result[i] = numbers[r];
+```
+
+Now we must be sure to never draw theat number again - all lottery
+numbers must be distinct. Therefore, we overwrite `numbers[r]` with the _last_ number in the array and reduce `n` by `1`.
+
+```Java
+numbers[r] = numbers[n - 1];
+```
+
+The point is that in each draw we pick an _index_, not the actual value. The index points into an array that contains the values that have not yet been drawn.
+
+After drawing `k` lottery numbers, we sort the `result` array a more pleasing output:
+
+```Java
+Arrays.sort(result);
+for (int r : result) {
+    System.out.println(r);
+}
+```
+
+### Listing 3.7
+
+```Java
+import java.util.*;
+
+/**
+ * This program demonstrates array manipulation
+ * @version 1.20 2004-02-10
+ * @author Cay Horstmann
+ **/
+
+public class LotteryDrawing {
+    public static void main(String[] arg) {
+        Scanner in = new Scanner(System.in);
+
+        System.out.print("How many numbers do you need to draw? ");
+        int k = in.nextInt();
+
+        System.out.print("What is the highest number you can draw? ");
+        int n = in.nextInt();
+
+        // fill an array with numbers 1 2 3 ... n
+        int[] numbers = new int[n];
+        for (int i = 0; i < numbers.length; i++) {
+            numbers[i] = i + 1;
+        }
+
+        // draw k numbers and put them into a second array
+        int[] result = new int[k];
+        for (int i = 0; i < result.length; i++) {
+            // pick the element at the random location
+            result[i] = numbers[r];
+
+            // move the last element into the random location
+            numbers[r] = numbers[n - 1];
+            n--;
+        }
+
+        // printed the sorted array
+        Arrays.sort(result);
+        System.out.println("Bet the following combination. It'll make you rich!");
+        for (int r : result) {
+            System.out.println(r);
+        }
+    }
+}
+```
