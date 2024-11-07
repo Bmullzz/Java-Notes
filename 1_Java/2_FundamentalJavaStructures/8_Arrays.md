@@ -5,7 +5,7 @@
 - [Array Copying](#array-copying)
 - [Command-Line Parameters](#command-line-parameters)
 - [Array Sorting](#array-sorting)
-- [Multidimensional Arrays]()
+- [Multidimensional Arrays](#multidimensional-arrays)
 - [Ragged Arrays]()
 
 An array is a data structure that stores a collection of values of the same type. You access each individual value through integer _index_. For example, if `a` is an array of integers, then `a[i]` is the `i`th integer in the array.
@@ -364,3 +364,68 @@ public class LotteryDrawing {
     }
 }
 ```
+
+- `java.util.Arrays` 1.2
+
+    - `static String toString(type[] a)` 5.0
+        - _returns_ a _string_ with the elements of `a`, enclosed in brackets and delimited by commas.
+        - _Parameters_: 
+            - `a`: An array of type `int`, `long`, `short`, `char`, `byte`, `boolean`, `float`, or `double`.
+
+    - `static type[] copyOf(type[] a, int length)` 6
+
+    - `static type[] copyOfRange(type[] a, int start, int end)` 6
+        - _returns_ an _array of the same type as `a`_, of `length` or `end` - `start`, filled with the values of `a`.
+
+        - _Parameters_:
+        
+            - `a`: An array of type `int`, `long`, `short`, `char`, `byte`, `boolean`, `float`, or `double`.
+
+            - `start`: The starting index (inclusive).
+
+            - `end`: The ending index (exclusive). May be larger than `a.length`, in which case the result is padded with `0` or `false` values.
+
+            - `length`: The length of the copy. If `length` is larger than `a.length`, the result is padded with `0` or `false` values. Otherwise, only the initial `length` values are copied.
+
+    - `static void sort(type[] a)`
+        - _sorts_ the array, using a tuned QuickSort algorithm.
+
+        - _Parameters_:
+
+            - `a`: An array of type `int`, `long`, `short`, `char`, `byte`, `boolean`, `float`, or `double`.
+
+    - `static int binarySearch(type[] a, type v)`
+
+    - `static int binarySearch(type[] a, int start, int end, type v)` 6
+        - Uses the binary search algorithm to search for the value `v`. If it is found, its index is returned. Otherwise, a negative value of `r` is returned; `-r - 1` is the spot at which `v` should be inserted to keep `a` sorted.
+
+        - _Parameters_:
+
+            - `a`: a _sorted_ array of type `int`, `long`, `short`, `char`, `byte`, `boolean`, `float`, or `double`.
+
+            - `start`: The starting index (inclusive).
+
+            - `end`: The ending index (exclusive).
+
+            - `v`: A value of the same type as the elements of `a`.
+
+    - `static void fill(type[] a, type v)`
+
+        - Sets all elements of the array to `v`.
+
+        - _Parameters_:
+
+            - `a`: An array of type `int`, `long`, `short`, `char`, `byte`, `boolean`, `float`, or `double`.
+
+            - `v`: A value of the same type as the elements of `a`.
+
+    - `static boolean equals(type[] a, type b)`
+
+        - _Returns_ `true` if the arrays have the same length and if the elements in corresponding indexes match.
+
+        - _Parameters_:
+
+            - `a`, `b`: Arrays of type `int`, `long`, `short`, `char`, `byte`, `boolean`, `float`, or `double`.
+
+## Multidimensional Arrays
+
