@@ -158,7 +158,173 @@ The `LocalDate` class has encapsulated instance fields to maintain the date to w
 
 - **Note**: Actually, the `Date` class also has methods to get the day, month, and year, called `getDay`, `getMonth`, and `getYear`, but these methods are _deprecated_. A method is deprecated when a library designer realizes that the method should have never been introduced in the first place.
 
-These methods were a part of the `Date` class before the library designers realized that it makes more sense to supply separate classes to deal with calendars. When an earlier set of calendar classes was introduced in Java 1.1, the `Date` methods were tagged as separate deprecated. You can still use them in your programs, but you will get unsightly compliler warnings if you do. It is a good idea to stay away from using deprecated methods because they may be removed in a future version of the library.,
+These methods were a part of the `Date` class before the library designers realized that it makes more sense to supply separate classes to deal with calendars. When an earlier set of calendar classes was introduced in Java 1.1, the `Date` methods were tagged as separate deprecated. You can still use them in your programs, but you will get unsightly compliler warnings if you do. It is a good idea to stay away from using deprecated methods because they may be removed in a future version of the library.
 
 ## Mutator and Accessor Methods
 
+Have another look at the `plusDays` method call that you saw in the preceding section:
+
+```Java
+LocalDate aThousandDaysLater = newYearsEve.plusDays(1000);
+```
+
+What happens to `newYearsEve` after the call? Has it been changed to be a thousand days later? As it turns out, it has not. The `plusDays` method yields a new `LocalDate` object, which is then assigned to the `aThousandDaysLAter` variable. The original object remains unchanged. We say that the `plusDays` method does not _mutate_ the object on which it is invoked. (This is similar to the `toUpperCase` method of the `String` class that you saw in Chapter 3. When you call `toUpperCase` on a string, that string stays the same, and a new string with uppercase characters is returned.)
+
+An earlier version of the Java library had a different class for dealing with calendars, called `GregorianCalendar`. Here is how you add a thousand days to a date represented by that class:
+
+```Java
+GregorianCalendar someDay = new GregorianCalendar(1999, 11, 31);
+    // Odd feature of that class: month numbers go from 0 to 11
+someDay.add(Calendar.DAY_OF_MONTH) + 1; // 09
+```
+
+Unlike the `LocalDate.plusDays` method, the `GregorianCalendar.add` method is a _mutator method_. After invoking it, the state of the `someDay` object has changed. Here is how you can find out the new state: 
+
+```Java
+year = someDay.get(Calendar.YEAR); // 2002
+month = someDay.get(Calendar.MONTH) + 1; // 09
+day = someDay.get(Calendar.); // 26
+```
+
+That's why we called the variable `someDay` and not `newsYearsEve` - it no longer is new year's eve after calling the mutator method.
+
+In contrast, methods that only access objects without modifying them are sometimes called _accessor methods_. For example, `LocalDate.getYear` and `GregorianCalendar.get` are accessor methods.
+
+- **C++ Note**: In C++, the `const` suffix denotes accessor methods. A method that is not declared as `const` is assumed to be a mutator. However, in that Java programming language, no special syntax distinguishes accessors from mutators.
+
+We finish this section with a program that puts the `LocalDate` class to work. The program displays a calendar for the current month, like this:
+
+| Mon | Tue | Wed | Thu | Fri | Sat | Sun |
+| --- | --- | --- | --- | --- | --- | --- |
+|     |     |     |     |     |     |  1  |
+| 2   | 3   | 4   | 5   | 6   | 7   | 8   |
+| 9   | 10  | 11  | 12  | 13  | 14  | 15  |
+| 16  | 17  | 18  | 19  | 20  | 21  | 22  |
+| 23  | 24  | 25  | 26* | 27  | 28  | 29  |
+| 30  |     |     |     |     |     |     |
+
+The current day is marked with an asterisk (*). As you can see, the program needs to know how to compute the length of a month and the weekday of a given day.
+
+Let us go through the key steps of the program. First, we construct an object that is initialized with the current date.
+
+```Java
+LocalDate date = LocalDate.now();
+```
+
+We capture the current month and day.
+
+```Java
+int month = date.getMonthValue();
+int today = date.getDayOfMonth();
+```
+
+Then we set `date` to the first of the month and get the weekday of that date.
+
+```Java
+date = date.minusDays(today - 1); // Set to start of month
+DayOfWeek weekday = date.getDayOfWeek();
+int value = week.getValue(); // 1 = Monday, ... 7 = Sunday
+```
+
+The variable `weekday` is set to an object of type `DayOfWeek`. We call the `getValue` method of that object to get a numerical value for the weekday. This yields an integer that follows the international convention where the weekend comes at the end of the week, returning `1` for Monday, `2` for Tuesday, and so on. Sunday has value `7`.
+
+Note that the first line of the calendar is indented, so that the first day of the month falls on the appropriate weekeday. Here is the code to print the header and the indentation for the first line:
+
+```Java
+System.out.println("Mon Tue Wed Thu Fri Sat Sun");
+for (int i = 1; i < value; i++) {
+    System.out.print("   ");
+}
+```
+
+Now, we are ready to print the date value. If `date` is today, the date is marked with an `*`. Then, we advance `date` to the next day. If we reach the beginning of each new week, we print a new line:
+
+```Java
+while (date.getMonthValue() == month) {
+    System.out.printf("%3d", date.getDayOfMonth());
+    if (date.getDayOfMonth() == today) {
+        System.out.print("*");
+    } else {
+        System.out.print("  ");
+    }
+    date = date.plusDays(1);
+    if (date.getDayOfWeek().getValue() == 1) System.out.println();
+}
+```
+
+When do we stop? We don't know whether the month has 31, 30, 29, or 28 days. Instead, we keep iterating while `date` is still in the current month.
+
+[Listing 4.1](#listing-41) shows the complete program.
+
+As you can see, the `LocalDate` class makes it possible to write a calendar program that takes care of complexities such as weekdays and the varying month lengths. You don't need to know _how_ the `LocalDate` class computes months and weekdays. You just use the _interface_ of the class - the methods such as `plusDays` and `getDayOfWeek`.
+
+The point of this example program is to show you how you can use the interface of a class to carry out fairly sophisticated tasks without having to know the implementation details.
+
+### Listing 4.1
+
+- `CalendarTest/CalendarTest.java`
+
+```Java
+import java.time.*;
+
+/**
+* @version 1.5 2015-05-08
+* @author Cay Horstmann
+**/
+
+public class CalendarTest {
+    public static void main(String[] args) {
+        LocalDate date = LocalDate.now();
+        int month = date.getMonthValue();
+        int today = date.getDayOfMonth();
+
+        date = date.minusDays(today - 1); // Set to start of month
+        DayOfWeek weekday = date.getDayOfWeek();
+        int value = weekday.getValue(); // 1 = Monday, ... 7 = Sunday
+
+        System.out.println("Mon Tue Wed Thu Fri Sat Sun");
+        for (int i = 1; i < value; i++) {
+            System.out.print("   ");
+        }
+        while (date.getMonthValue() == month) {
+            System.out.printf("%3d", date.getDayOfMonth());
+            if (date.getDayOfMonth() == today) {
+                 System.out.print("*");
+            } else {
+                System.out.print("  ");
+            }
+            date = date.plusDays(1);
+            if (date.getDayOfWeek().getValue() == 1) System.out.println();
+        }
+        if (date.getDayOfWeek().getValue() != 1) System.out.println();
+    }
+}
+```
+
+- `java.time.LocalDate` - Java 8
+
+    - `static LocalTime now()`
+
+        - constructs an object that represents the current date.
+
+    - `static LocalTime of(int year, int month, int day)`
+
+        - constructs an object that represents the given date.
+
+    - `int getYear()`
+
+    - `int getMonthValue()`
+
+    - `int getDayOfMonth()`
+
+        - get the year, month, and day of this date
+
+    - `DayOfWeek getDayOfWeek`
+
+        - Gets the weekday of this date as an instance of the `DayOfWeek` class. Call `getValue` to get a weekday between `1` (Monday) and `7` (Sunday).
+
+    - `LocalDate plusDays(int n)`
+
+    - `LocalDate minusDays(int n)`
+
+        - Yields the date that is `n` days after or before this date.
