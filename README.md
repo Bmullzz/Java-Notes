@@ -95,7 +95,7 @@
     - Use of Multiple Source Files
     - Dissecting the `Employee` Class
     - First Steps with Constructors
-    - Implicit and Explicit PArameters
+    - Implicit and Explicit Parameters
     - Benefits of Encapsulation
     - Class-Based Access Privileges
     - Private Methods
