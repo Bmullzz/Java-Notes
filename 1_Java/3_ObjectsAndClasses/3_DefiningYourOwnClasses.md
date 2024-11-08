@@ -3,7 +3,7 @@
 - [An `Employee` Class](#an-employee-class)
 - [Use of Multiple Source Files](#use-of-multiple-source-files)
 - [Dissecting the `Employee` Class](#dissecting-the-employee-class)
-- [First Steps with Constructors]()
+- [First Steps with Constructors](#first-steps-with-constructors)
 - [Implicit and Explicit Parameters]()
 - [Benefits of Encapsulation]()
 - [Class-Based Access Privileges]()
@@ -186,4 +186,96 @@ You may find it surprising that the second choice works even though the `Employe
 - **Note**: If you are familiar with the `make` facility of UNIX (or one of its Windows cousins, such as `nmake`), then you can think of the Java compiler as having the `make` functionality already built in.
 
 ## Dissecting the `Employee` Class
+
+In the sections that follow, we will dissect the `Employee` class. Let's start with the methods in this class. As you can see by examining the source code, this class has one constructor and four methods:
+
+```Java
+public Employee(String n, double s, int year, int month, int day)
+public String getName()
+public double getSalary()
+public LocalDate getHireDay()
+public void raiseSalary(double byPercent)
+```
+
+All methods of this class are tagged as `public`. The keyword `public` means that any method in any class can call the method. (The four possible access levels are covered in this and the next chapter.)
+
+Next, notice the three instance fields that will hold the data manipulated inside an instance of the `Employee` class.
+
+```Java
+private String name;
+private double salary;
+private LocalDate hireDay;
+```
+
+The `private` keyword makes sure that the _only_ methods that can access these instance fields are the methods of the `Employee` class itself. No outside method can read or write to these fields.
+
+- **Notes**: You could use the `public` keyword with your instance fields, but it would be a very bad idea. Having `public` data fields would allow any part of the program to read and modify the instance fields, completely ruining encapsulation. Any method of any class can modify public fields - and, in our experience, some code _will_ take advantage of that access privilage when you least expect it. We strongly recommend to make all your instnace fields `private`.
+
+Finally, notice that two of the instance fields are themselves objects: The `name` and `hireDay` fields are references to `String` and `LocalDate` objects. This is quite usual: Classes will often contain instance fields of class type.
+
+## First Steps with Constructors
+
+Let's look at the constructor listed in our `Employee` class.
+
+```Java
+public Employee(String n, double s, int year, int month, int day) {
+
+    name = n;
+    salary = s;
+    hireDay = LocalDate.of(year, month, day);
+}
+```
+
+As you can see, the name of the constructor is the same as the name of the class. This constructor runs when you construct objects of the `Employee` class - giving the instance fields the initial state you want them to have.
+
+For example, when you create an instance of the `Employee` class with the code like this:
+
+```Java
+new Employee("James Bond", 100000, 1950, 1, 1)
+```
+
+you have set the instance fields as follows:
+
+```Java
+name = "James Bond";
+salary = 100000;
+hireDay = LocalDate.of(1950, 1, 1); // January 1, 1950
+```
+
+There is an important difference between constructors and other methods. A constructor can only be called in conjunction with the `new` operator. You can't apply a constructor to an existing object to reset the instance fields. For example, 
+
+```Java
+james.Employee("James Bond", 250000, 1950, 1, 1) // ERROR
+```
+
+is a compile-time error.
+
+We will have more to say about constructors later in this chapter. For now, keep the following in mind:
+
+- A constructor has the same name as the class.
+- A class can have more than one constructor.
+- A constructor can take zero, one, or more parameters.
+- A constructor has no return value.
+- A constructor is always called with the `new` operator.
+
+**C++ Note**: Constructors work the same way in Java as they do in C++. Keep in mind, however, that all Java objects are constructed on the heap and that a constructor must be combined with `new`. It is a common error of C++ programmers to forget the `new` operator:
+
+```C++
+Employee number007("James Bond", 100000, 1950, 1, 1); // C++, not Java
+```
+
+That works in C++ but not in Java.
+
+- **CAUTION**: Be careful not to introduce local variables with the same names as the instance fields. For example, the following constructor will not set the salary:
+
+    ```Java
+    public Employee(Stirng n, double s, ...) {
+        String name = n; // Error
+        double salary = s; // Error
+    }
+    ```
+
+    The constructor declares _local_ variables `name` and `salary`. These variables are only accessible inside the constructor. They _shadow_ the instance fields with the same name. Some programmers accidentally write this kind of code when they type faster than they think, because their fingers are used to adding the data type. This is a nasty error that can be hard to track down. You just have to be careful in all of your methods to not use variable names that equal the names of instance fields.
+
+## Implicit and Explicit Parameters
 
