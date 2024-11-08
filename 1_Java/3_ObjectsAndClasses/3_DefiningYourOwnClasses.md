@@ -258,24 +258,25 @@ We will have more to say about constructors later in this chapter. For now, keep
 - A constructor has no return value.
 - A constructor is always called with the `new` operator.
 
-**C++ Note**: Constructors work the same way in Java as they do in C++. Keep in mind, however, that all Java objects are constructed on the heap and that a constructor must be combined with `new`. It is a common error of C++ programmers to forget the `new` operator:
+=====
 
-```C++
-Employee number007("James Bond", 100000, 1950, 1, 1); // C++, not Java
-```
+- **C++ Note**: Constructors work the same way in Java as they do in C++. Keep in mind, however, that all Java objects are constructed on the heap and that a constructor must be combined with `new`. It is a common error of C++ programmers to forget the `new` operator:
 
-That works in C++ but not in Java.
+    ```C++
+    Employee number007("James Bond", 100000, 1950, 1, 1); // C++, not Java
+    ```
 
-**CAUTION**: Be careful not to introduce local variables with the same names as the instance fields. For example, the following constructor will not set the salary:
+    That works in C++ but not in Java.
 
-```Java
-public Employee(Stirng n, double s, ...) {
-    String name = n; // Error
-    double salary = s; // Error
-}
-```
+- **CAUTION**: Be careful not to introduce local variables with the same names as the instance fields. For example, the following constructor will not set the salary:
 
-The constructor declares _local_ variables `name` and `salary`. These variables are only accessible inside the constructor. They _shadow_ the instance fields with the same name. Some programmers accidentally write this kind of code when they type faster than they think, because their fingers are used to adding the data type. This is a nasty error that can be hard to track down. You just have to be careful in all of your methods to not use variable names that equal the names of instance fields.
+    ```Java
+    public Employee(Stirng n, double s, ...) {
+        String name = n; // Error
+        double salary = s; // Error
+    }
+    ```
+
+    The constructor declares _local_ variables `name` and `salary`. These variables are only accessible inside the constructor. They _shadow_ the instance fields with the same name. Some programmers accidentally write this kind of code when they type faster than they think, because their fingers are used to adding the data type. This is a nasty error that can be hard to track down. You just have to be careful in all of your methods to not use variable names that equal the names of instance fields.
 
 ## Implicit and Explicit Parameters
-
