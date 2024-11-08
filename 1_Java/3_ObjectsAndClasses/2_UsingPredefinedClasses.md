@@ -1,8 +1,8 @@
 # Using Predefined Classes
 
 - [Objects and Object Variables](#objects-and-object-variables)
-- [The `LocalDate` Class of the Java Library]()
-- [Mutator and Accessor Methods]()
+- [The `LocalDate` Class of the Java Library](#the-localdate-class-of-the-java-library)
+- [Mutator and Accessor Methods](#mutator-and-accessor-methods)
 
 You can't do anything in Java without classes, and you have already seen several classes at work. However, not all of these show off the typical features of object orientation. Take, for example, the `Math` class. You have seen that you can use methods of the `Math` class, such as `Math.random`, without needing to know how they are implemented - all you need to know is the name and parameters (if any).
 
@@ -103,4 +103,62 @@ String s = birthday.toString(); // runtime error!
 
 Local variables are not automatically initialized to `null`. You must initialize them, either by calling `new` or by setting them to `null`.
 
-- **C++ Note**: 
+## The `LocalDate` Class of the Java Library
+
+In the preceding examples, we used the `Date` class that is a part of the standard Java library. An instance of the `Date` class has a state, namely _a particular point in time_.
+
+Although you don't need to know this when you use the `Date` class, the time is represented by the number of milliseconds (positive or negative) from a fixed point, the so-called _epoch_, which is `00:00:00 UTC, January 1, 1970`. `UTC` is the Coordinated Universal Time, the scientific time standard which is, for practical purposes, the same as the more familiar `GMT`, or Greenwich Mean Time.
+
+But as it turns out, the `Date` class is not very useful for manipulating the kind of calendar information that humans use for dates, such as "December 31, 1999". This particular description of a day follows the Gregorian calendar, which is the calendar used in most countries around the world. The same point in time would be described quite differently inn the Chinese or Hebrew lunar calendars, not to mention the calendar used by your customers from Mars.
+
+- **Notes**: Throughout human history, civilizations grappled with the design of calendars to attach names to dates and bring order to the solar and lunar cycles. For a fascinating explanation of calendars around the world, from the French Revolutionary calendar to the Mayan long count, see _Calendrical Calculations_ by Nachum Dershowitz and Edward M. Reingold (Cambridge University Press, 3rd ed., 2007).
+
+The library designers decided to separate the concerns of keeping time and attaching names to points in time. Therefore, the standard Java library contains two separate classes: the `Date` class, which represents a point in time, and the `LocalDate` class, which expresses days in the familiar calendar notation. Java SE 8 introduced quite a few other classes for manipulating various aspects of date and time.
+
+Separating time measurement from calendars is good object-oriented design. In general, it is a good idea to use separate classes to express different concepts.
+
+You do not use a constructor to construct objects of the `LocalDate` class. Instead, use static _factory methods_ that call constructors on your behalf. The expression
+
+```Java
+LocalDate.now()
+```
+
+constructs a new object that represents the date at which the object was constructed.
+
+You can construct an object for a specific date by supplying year, month, and day:
+
+```Java
+LocalDate.of(1999, 12, 31)
+```
+
+Of course, you will usually want to store the constructed object in an object variable:
+
+```Java
+LocalDate newYearsEve = LocalDate.of(1999, 12, 31);
+```
+
+Once you have a `LocalDate` object, you can find out the year, month, and day with the methods `getYear`, `getMonthValue`, and `getDayOfMonth`:
+
+```Java
+int year = newYearsEve.getYear(); // 1999
+int month = newYearsEve.getMonthValue(); // 12
+int day = newYearsEve.getDayOfMonth(); // 31
+```
+
+This may seem pointless because they are the very same values that you just used to construct the object. But sometimes, you have a date that has been computed, and then you will want to invoke those methods to find out more about it. For example, the `plusDays` method yields a new `LocalDate` that is a given number of days away from the object to which you apply it:
+
+```Java
+LocalDate aThousandDaysLater = newYearsEve.plusDays(1000);
+year = aThousandDaysLater.getYear(); // 2002
+month = aThousandDaysLater. getMonthValue() // 09
+day = aThousandDaysLater.getDayOfMonth(); // 26
+```
+
+The `LocalDate` class has encapsulated instance fields to maintain the date to which it is set. Without looking at the source code, it is impossible to know the representation that the class uses internally. But, of course, the point of encapsulation is that this doesn't matter. What matters are the methods that a class exposes.
+
+- **Note**: Actually, the `Date` class also has methods to get the day, month, and year, called `getDay`, `getMonth`, and `getYear`, but these methods are _deprecated_. A method is deprecated when a library designer realizes that the method should have never been introduced in the first place.
+
+These methods were a part of the `Date` class before the library designers realized that it makes more sense to supply separate classes to deal with calendars. When an earlier set of calendar classes was introduced in Java 1.1, the `Date` methods were tagged as separate deprecated. You can still use them in your programs, but you will get unsightly compliler warnings if you do. It is a good idea to stay away from using deprecated methods because they may be removed in a future version of the library.,
+
+## Mutator and Accessor Methods
+
