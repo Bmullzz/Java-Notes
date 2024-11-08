@@ -94,7 +94,3 @@ Many programmers use the UML (Unified Modeling Language) notation to draw _class
 
 - UML notation for class relationships
     - add screenshot of table
-
-## Using Predefined Classes
-
-
