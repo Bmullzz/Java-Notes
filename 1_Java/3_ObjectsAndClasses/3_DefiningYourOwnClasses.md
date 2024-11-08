@@ -2,7 +2,7 @@
 
 - [An `Employee` Class](#an-employee-class)
 - [Use of Multiple Source Files](#use-of-multiple-source-files)
-- [Dissecting the `Employee` Class]()
+- [Dissecting the `Employee` Class](#dissecting-the-employee-class)
 - [First Steps with Constructors]()
 - [Implicit and Explicit Parameters]()
 - [Benefits of Encapsulation]()
@@ -166,3 +166,24 @@ class Employee {
 ```
 
 ## Use of Multiple Source Files
+
+The program in [Listing 4.2](#listing-42) has two classes in a single source file. Many programmers prefer to put each class into its own source file. For example, you can place the `Employee` class into a file `Employee.java` and the `EmployeeTest` class into `EmployeeTest.java`.
+
+If you like this arrangement, you have two choices for compiling the program. You can invoke the Java compiler with a wildcard:
+
+```terminal
+javac Employee*.java
+```
+
+Then, all source files matching the wildcard will be compiled into class files. Or, you can simply type
+
+```terminal
+javac EmployeeTest.java
+```
+
+You may find it surprising that the second choice works even though the `Employee.java` file is never explicity compiled. However, when the Java compiler sees the `Employee` class being used inside `EmployeeTest.java`, it will look for a file named `Employee.class`. If it does not find that file, it automatically searches for `Employee.java` and compiles it. Moreover, if the timestamp of the version of `Employee.java` that it finds is newer than that of the existing `Employee.class` file, the Java compiler will _automatically_ recompile the file.
+
+- **Note**: If you are familiar with the `make` facility of UNIX (or one of its Windows cousins, such as `nmake`), then you can think of the Java compiler as having the `make` functionality already built in.
+
+## Dissecting the `Employee` Class
+
