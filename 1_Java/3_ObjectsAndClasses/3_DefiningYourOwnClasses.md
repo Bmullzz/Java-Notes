@@ -4,8 +4,8 @@
 - [Use of Multiple Source Files](#use-of-multiple-source-files)
 - [Dissecting the `Employee` Class](#dissecting-the-employee-class)
 - [First Steps with Constructors](#first-steps-with-constructors)
-- [Implicit and Explicit Parameters]()
-- [Benefits of Encapsulation]()
+- [Implicit and Explicit Parameters](#implicit-and-explicit-parameters)
+- [Benefits of Encapsulation](#benefits-of-encapsulation)
 - [Class-Based Access Privileges]()
 - [Private Methods]()
 - [Final Instance Fields]()
@@ -280,3 +280,83 @@ We will have more to say about constructors later in this chapter. For now, keep
     The constructor declares _local_ variables `name` and `salary`. These variables are only accessible inside the constructor. They _shadow_ the instance fields with the same name. Some programmers accidentally write this kind of code when they type faster than they think, because their fingers are used to adding the data type. This is a nasty error that can be hard to track down. You just have to be careful in all of your methods to not use variable names that equal the names of instance fields.
 
 ## Implicit and Explicit Parameters
+
+Methods operate on objects and access their instance fields. For example, the method
+
+```Java
+public void raiseSalary(double byPercent) {
+    double raise = salary * byPercent / 100;
+    salary += raise;
+}
+```
+
+sets a new value for the `salary` instance field in the object on which this method is invoked. Consider the call
+
+```Java
+number007.raiseSalary(5);
+```
+
+The effect is to increase the value of the `number007.salary` field by 5%. More specifically, the call executes the following instructions:
+
+```Java
+double raise = number007.salary * 5 / 100;
+number007.salary += raise;
+```
+
+The `raiseSalary` method has two parameters. The first parameter, called the _implicit_ parameter, is the object of type `Employee` that appears before the method name. The second parameter, the number inside the parentheses after the method name, is an _explicit_ parameter. (Some people call the implicit parameter the _target_ or _receiver_ of the method call.)
+
+As you can see, the explicit parameters are explicitly listed in the method declaration, for example, `double byPercent`. The implicit parameter does not appear in the method declaration. 
+
+In every method, the keyword `this` refers to the implicit parameter. If you like, you can write the `raiseSalary` method as follows:
+
+```Java
+public void raiseSalary(double byPercent) {
+    double raise = this.salary * byPercent / 100;
+    this.salary += raise;
+}
+```
+
+Some programmers prefer that style because it clearly distinguishes between instance fields and local variables.
+
+- **C++ Note**: In C++, you generally define methods outside the class:
+
+    ```C++ 
+    void Employee::raiseSalary(double byPercent){ // C++, not Java
+        ...
+    }
+    ```
+
+    If you define a method inside a class, then it is, automatically, an inline method.
+
+    ```C++
+    class Employee {
+        ...
+        int getName() { return name; } // inline in C++
+    }
+    ```
+
+    In Java, all methods are defined inside the class itself. This does not make them inline. Finding opportunites for inline replacement is the job of the Java virtual machine. The just-in-time compiler watches for calls to methods that are short, commonly called, and not overridden, and optimizes them away.
+
+## Benefits of Encapsulation
+
+Finally, let's look more closely at the rather simple `getName`, `getSalary`, and `getHireDay` methods.
+
+```Java
+public String getName() {
+    return name;
+}
+
+public double getSalary() {
+    return salary;
+}
+
+public LocalDate getHireDay() {
+    return hireDay;
+}
+```
+
+These are obviously examples of accessor methods. As they simply return the values of instance fields, they are sometimes called _field accessors_.
+
+Wouldn't it be easier to make the `name`, `salary`, and `hireDay` fields public, instead of having separate accessor methods?
+
+However, the `name` field is a read-only field. Once you set it in the constructor, there is no method to change it. Thus, we have a guaruntee that the `name` field will never be corrupted.
