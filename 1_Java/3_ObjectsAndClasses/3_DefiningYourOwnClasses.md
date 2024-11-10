@@ -387,3 +387,48 @@ firstName + " " + lastName
 This change is completely invisible to the remainder of the program.
 
 Of course, the accessor and mutator methods may need to do a lot of work and convert between the old and new data representation. That leads us to our second benefit: Mutator methods can perform error checking, whereas code that simply assigns to a field may not go into the trouble. For example, a `setSalary` method might check that the salary is never less than `0`.
+
+- **CAUTION**: Be careful not to write accessor methods that return references to mutable objects. In a previous edition of this book, we violated that rule in our `Employee` class in which the `getHireDay` method returned an object of class `Date`:
+
+```Java
+class Employee {
+    private Date hireDay;
+    ...
+    public Date getHireDay() {
+        return hireDay; // Bad
+    }
+    ...
+}
+```
+
+Unlike the `LocalDate` class, which has no mutator methods, the `Date` class has a mutator method, `setTime`, where you can set the number of milliseconds.
+
+The fact that `Date` objects are mutable breaks encapsulation! Consider the following rogue code:
+
+```Java
+Employee harry = ...;
+Date d = harry.getHireDay();
+double tenYearsInMilliseconds = 10 * 365.25 * 24 * 60 * 60 * 1000;
+d.setTime(d.getTime() - (long) tenYearsInMilliseconds);
+// let's give Harry ten years of added senority
+```
+
+The reason is subtle, Both `d` and `harry.hireDay` refer to the same object (see the figure below) Applying mutator methods to `d` automatically changes the private state of the employee object!
+
+- add screenshot
+
+If you need to return a reference to a mutable object, you should _clone_ it first. A clone is an exact copy of an object stored in a new location. We discuss cloning in detail in Chapter 6. Here is the corrected code:
+
+```Java
+class Employee {
+    ...
+    public Date getHireDay() {
+        return (Date) hireDay.clone(); // Ok
+    }
+    ...
+}
+```
+
+As a rule of thumb, always use `clone` whenever you need to return a copy of a mutable field.
+
+## 
