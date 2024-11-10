@@ -360,3 +360,14 @@ These are obviously examples of accessor methods. As they simply return the valu
 Wouldn't it be easier to make the `name`, `salary`, and `hireDay` fields public, instead of having separate accessor methods?
 
 However, the `name` field is a read-only field. Once you set it in the constructor, there is no method to change it. Thus, we have a guaruntee that the `name` field will never be corrupted.
+
+The `salary` field is not read-only, but it can only be changed by the `raiseSalary` method. In particular, should the value ever turn out wrong, only that method needs to be debugged. Had the `salary` field been public, the culprit for messing up the value could have been anywhere.
+
+Sometimes, it happens that you want to get and set the value of an instance field. Then you need to supply _three_ items:
+
+- A private data field;
+- A public field accessor method; and
+- A public field mutator method.
+
+This is a lot more tedious than supplying a single public data field, but there are considerable benefits.
+
