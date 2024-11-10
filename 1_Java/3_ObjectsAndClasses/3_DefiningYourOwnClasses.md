@@ -6,9 +6,9 @@
 - [First Steps with Constructors](#first-steps-with-constructors)
 - [Implicit and Explicit Parameters](#implicit-and-explicit-parameters)
 - [Benefits of Encapsulation](#benefits-of-encapsulation)
-- [Class-Based Access Privileges]()
-- [Private Methods]()
-- [Final Instance Fields]()
+- [Class-Based Access Privileges](#class-based-access-privileges)
+- [Private Methods](#private-methods)
+- [Final Instance Fields](#final-instance-fields)
 
 In the previous chapter, you started writing simple classes. However, all those classes had just a single `main` method. Now the time has come to show you how to write the kind of "workhorse classes" that are needed for more sophisticated applications. These classes typically do not have a `main` method. Instead, they have their own instance fields and methods. To build a complete program, you combine several classes, one of which has a `main` method.
 
@@ -431,4 +431,66 @@ class Employee {
 
 As a rule of thumb, always use `clone` whenever you need to return a copy of a mutable field.
 
-## 
+## Class-Based Access Privileges
+
+You know that a method can access the private data of the object on which it is invoked. What many people find surprising is that a method can access the private data of _all objects in its class_. For example, consider a method `equals` that compares two employees.
+
+```Java
+class Employee {
+    ...
+    public boolean equals(Employee other) {
+        return name.equals(other.name);
+    }
+}
+```
+
+A typical call is 
+
+```Java
+if (harry.equals(boss)) ...
+```
+
+This method has access to the private fields of `harry`, which is not surprising. It also accesses the private fields of `boss`. This is legal because `boss` is an object of type `Employee`, and a method of the `Employee` class is permitted to access the private fields of _any_ object of type `Employee`.
+
+- **C++ Note**: C++ has the same rule. A method can access the private features of any object of its class, not just of the implicit parameter.
+
+## Private Methods
+
+When implementing a class, we make all data fields private because public data are dangerous. But what about the methods? While most methods are public, private methods are useful in certain circumstances. Sometimes, you may wish to break up the code for a computation into separate helper methods. Typically, these helper methods should not be part of the public interface - they may be too close to the current implementation or require a special protocol or calling order. Such methods are best implemented as `private`.
+
+To implement a private method in Java, simply change the `public` keyword to `private`.
+
+By making a method private, you are under no obligation to keep it available if you change your implementation. The method may well be _harder_ to implement or _unnecessary_ if the data representation changes; this is irrelevant. The point is that as long as the method is private, the designers of the class can be assured that it si never used outside the other class, so they can simply drop it. If a method is public, you cannot simply drop it because other code might rely on it.
+
+## Final Instance Fields
+
+You can define an instance field as `final`. Such a field must be initialized when the object is constructed. That is, you must guarantee that the field value has been set after the end of every constructor. Afterwards, the field may not be modified again. For example, the `name` field of the `Employee` class may be declared as `final` because it never changes after the object is constructed - there is no `setName` method.
+
+```Java
+class Employee {
+    private final String name;
+    ...
+}
+```
+
+The `final` modifier is particularly useful for fields whose type is primitive or an _immutable class_. (A class is immutable if none of its methods ever mutate its objects. For example, the `String` class is immutable.)
+
+For mutable classes, the `final` modifier can be confusing. For example, consider a field
+
+```Java
+private final StringBuilder evaluations;
+```
+
+that is initalized in the `Employee` constructor as 
+
+```Java
+evaluations = new StringBuilder();
+```
+
+The `final` keyword merely means that the object reference stored in the `evaluations` variable will never again refer to a different `StringBuilder` object. But the object can be mutated:
+
+```Java
+public void giveGoldStar() {
+    evaluations.append(LocalDate.now() + ": Gold star!\n");
+}
+```
