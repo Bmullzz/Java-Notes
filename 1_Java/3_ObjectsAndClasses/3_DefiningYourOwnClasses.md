@@ -371,3 +371,19 @@ Sometimes, it happens that you want to get and set the value of an instance fiel
 
 This is a lot more tedious than supplying a single public data field, but there are considerable benefits.
 
+First, you can change the internal implementation without affecting any code other than the methods of the class. For example, if the storage of the name is changed to
+
+```Java
+String firstName;
+String lastName;
+```
+
+then the `getName` method can be changed to return
+
+```Java
+firstName + " " + lastName
+```
+
+This change is completely invisible to the remainder of the program.
+
+Of course, the accessor and mutator methods may need to do a lot of work and convert between the old and new data representation. That leads us to our second benefit: Mutator methods can perform error checking, whereas code that simply assigns to a field may not go into the trouble. For example, a `setSalary` method might check that the salary is never less than `0`.
