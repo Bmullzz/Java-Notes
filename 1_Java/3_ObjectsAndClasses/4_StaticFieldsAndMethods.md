@@ -82,3 +82,44 @@ System.out = new PrintStream(...); // Error--out is final
 - **NOTE**: If you look at the `System` class, you will notice a method can change the value of a `final` variable. However, the `setOut` method is a _native_ method, not implemented in the Java programming language. Native methods can bypass the access control mechanisms of the Java language. This is a very unusual workaround that you should not emulate in your programs.
 
 ## Static Methods
+
+Static methods are methods that do not operate on objects. For example, the `pow` method of the `Math` class is a static method. The expression
+
+```Java
+Math.pow(x, a);
+```
+
+computes the power $x^{a}$. It does not use any `Math` object to carry out its task. In other words, it has no implicit parameter.
+
+You can think of static methods as methods that don't have a `this` parameter. (In a nonstatic method, the `this` parameter refers to the implicit parameter of the method - see the section on "Implicit and Explicit Parameters,".)
+
+A static method of the `Employee` class cannot access the `id` instance field because it does not operate on an object. However, a static method can access a static field. Here is an example of such a static method:
+
+```Java
+public static int getNextId() {
+    return nextId; // returns static field
+}
+```
+
+To call this method, you supply the name of the class:
+
+```Java
+int n = Employee.getNextId();
+```
+
+Could you have omitted the keyword `static` for this method? Yes, but then you would need to have an object reference of type `Employee` to invoke the method.
+
+- **NOTE**: It is legal to use an object to call a static method. For example, if `harry` is an `Employee` object, then you can call `harry.getNextId()` instead of `Employee.getNextId()`. However, we find that notation confusing. The `getNextId` method doesn't look at `harry` at all to compute the result. We recommend that you use class names, not objects, to invoke static methods.
+
+Use static methods in two situations:
+
+- When a method doesn't need to access the object state because all needed parameters are supplied as explicit parameters (example: `Math.pow`).
+
+- When a method only needs to access static fields of the class (example: `Employee.getNextId`).
+
+---
+
+- **C++ Note**: Static fields and methods have the same functionality in Java and C++. However, the syntax is slightly different. In C++, you use the `::` operator to access a static field or method outside its scope, such as `Math::PI`.
+
+    The term "static" has a curious history. At first, the keyword `static` was introduced in C to denote local variable that don't go away when a block is exited. In that context, the term "static" makes sense: The variable stays around and is still there when the block is entered again. Then `static` got a second meaning in C, to denote global variables and functions that cannot be accessed from other files. The keyword `static` was simply reused, to avoid introducing a new keyword. Finally, C++ reused the keyword for a third, unrelated, interpretation - to denote variables and functions that belong to a class but not to any particular object of the class. That is the same meaning the keyword has in Java.
+
