@@ -2,9 +2,9 @@
 
 - [Static Fields](#static-fields)
 - [Static Constants](#static-constants)
-- [Static Methods]()
-- [Factory Methods]()
-- [The `main` Method]()
+- [Static Methods](#static-methods)
+- [Factory Methods](#factory-methods)
+- [The `main` Method](#the-main-method)
 
 In all programs that you have seen, the `main` method is tagged with the `static` modifier. We are now ready to discuss the meaning of this modifier.
 
@@ -123,3 +123,163 @@ Use static methods in two situations:
 
     The term "static" has a curious history. At first, the keyword `static` was introduced in C to denote local variable that don't go away when a block is exited. In that context, the term "static" makes sense: The variable stays around and is still there when the block is entered again. Then `static` got a second meaning in C, to denote global variables and functions that cannot be accessed from other files. The keyword `static` was simply reused, to avoid introducing a new keyword. Finally, C++ reused the keyword for a third, unrelated, interpretation - to denote variables and functions that belong to a class but not to any particular object of the class. That is the same meaning the keyword has in Java.
 
+## Factory Methods
+
+Here is another common use for static methods. Classes such as `LocalDate` and `NumberFormat` use static _factory methods_ that constructs objects. You have already seen the factory methods `LocalDate.now` and `LocalDate.of`. Here is how the `NumberFormat` class yields formatter objects for various styles:
+
+```Java
+NumberFormat currencyFormatter = NumberFormat.getCurrencyInstance();
+NumberFormat percentFormatter = NumberFormat.getPercentInstance();
+double x = 0.1;
+System.out.println(currencyFormatter.format(x)); // prints $0.10
+System.out.println(percentFormatter.format(x)); // prints 10%
+```
+
+Why doesn't the `NumberFormat` class use a constructor instead? There are two reasons:
+
+- You can't give names to the constructors. The constructor name is always the same as the class name. But we want two different names to get the currency instance and the percent instance.
+
+- When you use a constructor, you can't vary the type of the constructed object. But the factory methods actually return objects of the class `DecimalFormat`, a sub-class that inherits from `NumberFormat`. (See the chapter on inheritance to learn more.)
+
+## The `main` Method
+
+Note that you can call static methods without having any objects. For example, you never construct any objects of the `Math` class to call `Math.pow`.
+
+For the same reason, the `main` method is a static method.
+
+```Java
+public class Application {
+
+    public static void main(String[] args) {
+
+        //construct objects here
+        ...
+    }
+}
+```
+
+The `main` method does not operate on any objects. In fact, when a program starts, there aren't any objects yet. The static `main` method executes, and constructs the objects that the program needs.
+
+- **Tip**: Every class can have a `main` method. That is a handy trick for unit testing of classes. For example, you can add a `main` method to the `Employee` class:
+
+    ```Java
+    class Employee {
+
+        public Employee(String n, double s, int year, int month, int day) {
+            name = n;
+            salary = s;
+            LocalDate hireDay = LocalDate.now(year, month, day);
+        }
+        ...
+        public static void main(String[] args) { // unit test
+            Employee e = new Employee("Romeo", 50000, 2003, 3, 31);
+            e.raiseSalary(10);
+            System.out.println(e.getName() + " " + e.getSalary());
+        }
+        ...
+    }
+    ```
+
+    If you want to test the `Employee` class in isolation, simple execute
+
+    ```terminal
+    java Employee
+    ```
+
+    If the `Employee` class is a part of a larger application, you start the application with 
+
+    ```terminal
+    java Application
+    ```
+
+    and the `main` method of the `Employee` class is never executed.
+
+The program in [Listing 4.3](#listing-43) contains a simple version of the `Employee` class with a static field `nextId` and a static method `getNextId`. We fill an array with three `Employee` objects and then print the employee information. Finally, we print the next available identification number, to demonstrate the static method. 
+
+Note that the `Employee` class also has a static `main` method for unit testing. Try running both
+
+```terminal
+java Employee
+```
+
+and
+
+```terminal
+java StaticTest
+```
+
+to execute both `main` methods.
+
+### Listing 4.3
+
+- `StaticTest/StaticTest.java`
+
+```Java
+/**
+* This program demonstrates static methods
+* @version 1.01 2004-02-19
+* @author Cay Horstmann
+**/
+public class StaticTest {
+
+    public static void main(String[] args) {
+
+        // fill the staff array with three Employee objects
+        Employee[] staff = new Employee[3];
+
+        staff[0] = new Employee("Tom", 40000);
+        staff[1] = new Employee("Dick", 60000);
+        staff[2] = new Employee("Harry", 65000);
+
+        // print out information about all Employee objects
+        for (Employee e : staff) {
+            e.setId();
+            System.out.println("name=" + e.getName() + ",id=" + e.getId() + ",salary=" + e.getSalary());
+        }
+
+        int n = Employee.getNextId(); // calls static method
+        System.out.println("Next available id=" + n);
+    }
+}
+
+class Employee {
+
+    private static int nextId = 1;
+
+    private String name;
+    private double salary;
+    private int id;
+
+    public Employee(String n, double s) {
+        name = n;
+        salary = s;
+        id = 0;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public double getSalary() {
+        return salary;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId() {
+        id = nextId; // set id to next available id
+        nextId++;
+    }
+
+    public static int getNextId() {
+        return nextId; // returns static field
+    }
+
+    public static void main(String[] args) {
+        Employee e = new Employee("Harry", 50000);
+        System.out.println(e.getName() + " " + e.getSalary());
+    }
+}
+```
