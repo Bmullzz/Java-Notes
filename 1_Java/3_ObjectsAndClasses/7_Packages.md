@@ -3,7 +3,7 @@
 - [Class Importation](#class-importation)
 - [Static Imports](#static-imports)
 - [Addition of a Class into a Package](#addition-of-a-class-into-a-package)
-- [Package Scope]()
+- [Package Scope](#package-scope)
 
 Java allows you to group classes in a collection called a _package_. Packages are convenient for organizing your work and for separating your work from code libraries provided by others.
 
@@ -104,3 +104,132 @@ sqrt(pow(x, 2) + Math.pow(y, 2))
 ```
 
 ## Addition of a Class into a Package
+
+To place classes inside a package, you must put the name of the package at the top of your source file, _before_ the code that defines the classes in the package. For example, the file `Employee.java` in [Listing 4.7]() start out liek this:
+
+```Java
+package com.horstmann.corejava;
+
+public class Employee {
+    ...
+}
+```
+
+If you don't put a `package` statement in the source file, then the classes in that source file belong to the _default package_. The default package has no package name. Up to now, all our example classes were located in the default package. 
+
+Place source files into a subdirectory that matches the full package name. For example, all source files in the `com.horstmann.corejava` package should be in a subdirectory `com/horstmann/corejava` (`com\horstmann\corejava` on Windows). The compiler places the class files into the same directory structure.
+
+The program in [Listng 4.6](#listing-46) and [4.7](#listing-47) is distributed over two packages: The `PackageTest` class belongs to the default package, and the `Employee` class belongs to the `com.horstmann.corejava` package. Therefore, the `Employee.java` file must be in a subdirectory `com/horstmann/corejava`. In other words, the directory structure is as follows:
+
+![directory structure](image-3.png)
+
+To compile this program, simply change to the base directory and run the command
+
+```Java
+javac PackageTest.java
+```
+
+The compiler automatically finds the file `com/horstmann/corejava/Employee.java` and compiles it.
+
+Let's look at a more realistic example, in which we don't use the default package but have classes distributed over several packages (`com.horstmann.corejava` and `com.mycompany`).
+
+![packages](image-4.png)
+
+In this situation, you must compile and run classes from the _base_ directory:
+
+```Java
+javac com/mycompany/PayrollApp.java
+java com.mycompany.PayrollApp
+```
+
+Note again that the compiler operates on _files_ (with file separators and an extension `.java`) , whereas the Java interpretor loads a _class_ (with dot separators).
+
+- **Tips**: Starting with the next chapter, we will use packages for the cource code. That way. you can make an IDE project for each chapter instead of each section.
+
+- **CAUTION**: The compiler does _not_ check the directory structure when it compiles source files. For example, suppose you have a source file that starts with the directive
+
+    ```Java
+    package com.mycompany;
+    ```
+    You can compile the file even if it is not contained in a subdirectory `com/mycompany`. The source file will compile without errors _if it doesn't depend on other packages_. However, the resulting program will not run unless you first move all class files to the right place. The _virtual machine_ won't find the classes if the packages don't match the directories.
+
+### Listing 4.6
+
+- `PackageTest/PackageTest.java`
+
+```Java
+import com.horstmann.corejava.*;
+// the Employee class is defined in that package
+
+import static java.lang.System.*;
+
+/**
+ * This program demonstrates the use of packages.
+ * @version 1.11 2004-02-19
+ * @author Cay Horstmann
+ **/
+public class PackageTest {
+
+    public static void main(String[] args) {
+
+        // because of the import statement, we don't have to use
+        // com.horstmann.corejava.Employee here
+        Employee harry = new Employee("Harry Hacker", 50000, 1989, 10, 1);
+
+        harry.raiseSalary(5);
+
+        // because of the static import statement, we don't have to use System.out here
+        out.println("name=" + harry.getName() + ",salary=" + harry.getSalary());
+    }
+}
+```
+
+### Listing 4.7
+
+- `PackageTest/com/horstmann/corejava/Employee.java`
+
+```Java
+package com.horstmann.corejava;
+
+// the classes in this file are part of this package
+
+import java.time.*;
+
+// import statements come after the package statement
+
+/**
+ * @version 1.11 2015-05-08
+ * @author Cay Horstmann
+ **/
+public class Employee {
+
+    private String name;
+    private double salary;
+    private LocalDate hireDay;
+
+    public Employee(String name, double salary, int year, int month, int day) {
+        this.name = name;
+        this.salary = salary;
+        hireDay = LocalDate.of(year, month, day);
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public double getSalary() {
+        return salary;
+    }
+
+    public LocalDate() {
+        return hireDay;
+    }
+
+    public void raiseSalary(double byPercent) {
+        double raise = salary * byPercent / 100;
+        salary += raise;
+    }
+}
+```
+
+## Package Scope
