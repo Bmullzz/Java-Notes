@@ -5,8 +5,8 @@
 - [The Constructor With No Arguments](#the-constructor-with-no-arguments)
 - [Explicit Field Initialization](#explicit-field-initialization)
 - [Parameter Names](#parameter-names)
-- [Calling Another Constructor]()
-- [Initialization Blocks]()
+- [Calling Another Constructor](#calling-another-constructor)
+- [Initialization Blocks](#initialization-blocks)
 - [Object Destruction and the `finalize` Method]()
 
 You have seen how to write simple constructors that define the initial state of your objects. However, since object construction is so important, Java offers quite a variety of mechanisms for writing constructors. We go over these mechanisms in the sections that follow.
@@ -243,3 +243,152 @@ This mechanism is never necessary and is not common. It is usually more straight
 
 - **NOTE**: It is illegal to set fields in initialization blocks even if they are only defined later in the class. However, to avoid circular definitions, it is not legal to read from fields that are only initialized later. The exact rules are spelled out in the Java Language Specification section (http://docs.oracle.com/javase/specs). The rules are complex enough to baffle the compiler implementors - early versions of Java implemented them with subtle errors. Therefore, we suggest that you always place initialization blocks agter the field definitions.
 
+With so many ways of initializing data fields, it can be quite confusing to give all possible pathways for the construction process. Here is what happens in detail when a constructor is called:
+
+1. All data fields are initialized it their default values(`0`, `false`, or `null`).
+
+2. All field initializers and initialization blocks are executed, in the order in which they occur in the class declaration.
+
+3. If the first line of the constructor calls a second constructor, then the body of the second constructor is executed.
+
+4. The body of the constructor is executed.
+
+Naturally, it is always a good idea to organize your initialization code so that another programmer could easily understand it without having to be a language lawyer. For example, it would be quite strange and somewhat error-prone to have a class whose constructors depend on the order in which the data fields are declared.
+
+To initialize a static field, either supply an intial value or use a static initialization block. You have already seen the first mechanism:
+
+```Java
+private static int nextId = 1;
+```
+
+If the static fields of your class require complex initialization code, use a static initialization block.
+
+Place the code inside a block and tag it with the keyword `static`. Here is an example. We want the employee ID numbers to start at a random integer less than 10,000.
+
+```Java
+// static initialization
+static {
+    Random generator = new Random();
+    nextId = generator.nextInt(10000);
+}
+```
+
+Static initialization occurs when the class is first loaded. Like instance fields, static fields are `0`, `false`, or `null` unless you explicitly set them to another value.
+
+All static field initializers and static initialization blocks are executed in the order in which they occur in the class declaration.
+
+- **NOTE**: Amazingly enough, up to JDK 6, it was possible to write a "Hello, World" program in Java without ever writing a `main` method.
+
+    ```Java
+    public class Hello {
+
+        static {
+            System.out.println("Hello, World");
+        }
+    }
+    ```
+
+    When you invoked the class with `java Hello`, the class was loaded, the static initialization block printed "Hello, World", and only then was a message displayed that `main` is not defined. Since Java SE 7, the `java` program first checks that there is a `main` method.
+
+The program in [Listing 4.5]() shows many of the features that we discussed in this section:
+
+- Overloaded constructors
+- A call to another constructor with `this(...)`
+- A no-argument constructor
+- An object initialization block
+- A static intialization block
+- An instance field intialization
+
+### Listing 4.5
+
+- `ConstructorTest/ConstructorTest.java`
+
+```Java
+import java.util.*;
+
+/**
+ * This program demonstrates object construction.
+ * @version 1.01 2004-02-19
+ * @author Cay Horstmann
+ **/
+public class ConstructorTest {
+
+    public static void main(String[] args) {
+        // fill the staff with three Employee objects
+        Employee[] staff = new Employee[3];
+
+        staff[0] = new Employee("Harry", 40000);
+        staff[1] = new Employee(60000);
+        staff[2] = new Employee();
+
+        // print out information about all Employee objects
+        for (Employee e : staff) {
+            System.out.println("name=" + e.getName() + ",id=" + e.getId() + ",salary=" + e.getSalary());
+        }
+    }
+}
+
+class Employee {
+
+    private static int nextId;
+
+    private int id;
+    private String name = ""; // instance field initialization
+    private double salary;
+
+    // static initialization block
+    static {
+        Random generator = new Random();
+        // set nextId to a random number between 0 and 9999
+        nextId = generator.nextInt(10000);
+    }
+
+    // object initialization block
+    {
+        id = nextId;
+        nextId++;
+    }
+
+    // three overloaded constructors
+    public Employee(String n, double s) {
+        name = n;
+        salary = s;
+    }
+
+    public Employee(double s) {
+        // calls the Employee(String, double) constructor
+        this("Employee #" + nextId, s);
+    }
+
+    // the default constructor
+    public Employee() {
+        // name initialized to ""--see above
+        // salary not explicitly set--initialized to 0
+        // id initialized in initialization block
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public double getSalary() {
+        return salary;
+    }
+
+    public int getId() {
+        return id;
+    }
+}
+```
+
+- `java.util.Random` 1.0
+
+    - `Random()`
+        - constructs a new random number generator
+
+    - `int nextId(int n)` 1.2
+        - returns a random number between `0` and `n-1`.
+
+## Object Destruction and the `finalize` Method
+
+Some object-oriented
