@@ -2,7 +2,7 @@
 
 - [Class Importation](#class-importation)
 - [Static Imports](#static-imports)
-- [Addition of a Class into a Package]()
+- [Addition of a Class into a Package](#addition-of-a-class-into-a-package)
 - [Package Scope]()
 
 Java allows you to group classes in a collection called a _package_. Packages are convenient for organizing your work and for separating your work from code libraries provided by others.
@@ -82,3 +82,25 @@ Locating classes in packages is an activity of the _compiler_. The bytecodes in 
 
 ## Static Imports
 
+A form of the `import` statement permits the importing of static methods and fields, not just classes.
+
+For example, if you add the directive
+
+```Java
+import static java.lang.System.*;
+```
+
+to the top of your source file, then you can use the static methods and fields of the `System` class without the class name prefix:
+
+```Java
+out.println("Goodbye, World!"); // i.e., System.out
+exit(0); // i.e., System.exit
+```
+
+In practice, it seems doubtful that many programmers will want to abbreviate `System.out` or `System.exit`. The resulting code seems less clear. On the other hand,
+
+```Java
+sqrt(pow(x, 2) + Math.pow(y, 2))
+```
+
+## Addition of a Class into a Package
