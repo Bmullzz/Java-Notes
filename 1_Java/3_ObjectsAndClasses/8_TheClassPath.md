@@ -83,3 +83,34 @@ The compiler goes one step further. It looks at the _source files_ to see if the
 
 ## Setting the Class Path
 
+It is best to specify the class path with the `-classpath` (or `-cp`) option:
+
+```terminal
+java -classpath /home/user/classdir:.:/home/user/archives/archive.jar MyProg
+```
+
+or 
+
+```terminal
+java -classpath c:\classdir;.;c:\archives\archive.jar MyProg
+```
+
+The entire command must be typed onto a single line. It is a good idea to place such a long command line into a shell script or a batch file.
+
+Using the `-classpath` option is the preferred approach for setting the class path. An alternate approach is the `CLASSPATH` environment variable. The details depend on your shell. With the Bourne Again shell (bash), use the command
+
+```bash
+export CLASSPATH=/home/user/classdir:.:/home/user/archives/archive.jar
+```
+
+With the Windows shell, use
+
+```shell
+set CLASSPATH=c:\classdir;.;c:\archives\archive.jar
+```
+
+The class path is set until the shell exits.
+
+- **CAUTION**: Some people recommend to set the `CLASSPATH` environment variable permanently. This is generally a bad idea. People forget the global setting, and are surprised when their classes are not loaded properly. A particularly reprehensible example is Apple's QucikTime installer in Windows. For several years, it globally set `CLASSPATH` to point to a JAR file it needed, but did not include the current directory in the classpath. As a result, countless Java programmers were driven to distraction when their programs compiled but failed to run.
+
+- **CAUTION**: Some people recommend to bypass the class path altogether, by dropping all JAR files into the `jre/lib/ext` directory. That is truly bad advice, for two reasons. Archives that manually load other classes do not work correctly when they are placed in the extension directory. Moreover, programmers have a tendency to forget about the files they placed there months ago. Then, they scratch their heads when the class loader seems to ignore their carefully crafted class path because it is actually loading long-forgotten classes from the extension directory.
