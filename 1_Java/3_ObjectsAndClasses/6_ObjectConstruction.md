@@ -391,4 +391,12 @@ class Employee {
 
 ## Object Destruction and the `finalize` Method
 
-Some object-oriented
+Some object-oriented programming languages, notably C++, have explicit destructor for methods for any cleanup code that may be needed when an object is no longer used. The most common activity in a destructor is reclaiming the memory set aside for objects. Since Java does automatic garbage collection, manual memory reclamation is not needed, so Java does not support destructors.
+
+Of course, some objects utilize a resource other than memory, such as a file or a handle to another object that uses system resources. In this case, it is important that the resource be reclaimed and recycled when it is no longer needed.
+
+You can add a `finalize` method to any class. The `finalize` method will be called before the garbage collector sweeps away the object. In practice, _do not rely on the_ `finalize` _method_ for recycling any resources that are in short supply - you simply cannot know when this method will be called.
+
+- **NOTE**: The method call `System.runFinalizersOnExit(true)` guarantees that finalizer methods are called before Java shuts down. However, this method is inherently unsafe and has been deprecated. An alternative is to add "shutdown hooks" with the method `Runtime.addShutdownHook - see the API documentation for details.
+
+If a resource needs to be closed as soon as you have finished using it, you need to manage it manually. Supply a `close` method that does the necessary cleanup, and call it when you are done with the object. In the section "the Try-with-Resources Statement," you will see how you can ensure that this method is called automatically.
