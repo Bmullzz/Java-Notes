@@ -36,9 +36,50 @@ This class path contains
 - The current directory (.); and
 - The JAR file `/home/user/archives/archive.jar` or `c:\archives\archive.jar`.
 
-Staritng with Java SE 6, you can specify a wildcard for a JAR file directory, like this class path.
+Starting with Java SE 6, you can specify a wildcard for a JAR file directory, like this:
+
+```
+/home/user/classdir:.:/home/user/archives/'*'
+```
+
+or 
+
+```
+c:\classdir;.;c:\archives\*
+```
+
+In UNIX, the `*` must be escaped to prevent shell expansion.
+
+All JAR files (but not `.class` files) in the `archives` directories are included in this class path.
 
 The runtime library files (`rt.jar` and the other JAR files in the `jre/lib` and `jre/lib/ext` directories) are always searched for classes; don't include them explicitly in the class path.
 
 - **CAUTION**: The `javac` compiler always lookes for files in the current directory, but the `java` virtual machine launcher only looks into the current directly if the "." directory is on the class path. If you have no class path set, this is not a problem - the default class path consists of the "." directory. But if you have set the class path and forgot to include the "." directory, your programs will compile without error, but they won't run.
+
+The class path lists all directories and archive files that are _starting points_ for locating classes. Let's consider our sample class path:
+
+```
+/home/user/classdir:.:/home/user/archives/archive.jar
+```
+
+Suppose the virtual machine searches for the class file or the `com.horstmann.corejava.Employee.class`. It first looks in the system class files that are stored in archives in the `jre/lib` and `jre/lib/ext` directories. It won't find the class file there, so it turns to the class path. It then looks for the following files:
+
+- `/home/user/classdir/com/horstmann/corejava/Employee.class`
+
+- `com/horstmann/corejava/Employee.class` starting from the current directory
+
+- `com/horstmann/corejava/Employee.class` inside `/home/user/archives/archive.jar`
+
+The compiler has a harder time locating files than does the virtual machine. If you refer to a class without specifying its package, the compiler first needs to find out the package that contains the class. It consults all `import` directives as possible sources for the class. For example, suppose the source file contains directives
+
+```Java
+import java.util.*;
+import com.horstmann.corejava.*;
+```
+
+and the source code referes to a class `Employee`. The compiler then tries to find `java.lang.Employee` (because the `java.lang` package is always imported by default), `java.util.Employee`, `com.horstmann.corejava.Employee`, and `Employee` in the current package. It searches for _each_ of these classes in all of the locations of the class path. It is a compile-time error if more than one class is found. (Classes must be unique, so the order of the `import` statements doesn't matter.)
+
+The compiler goes one step further. It looks at the _source files_ to see if the source is newer than the class file. If so, the source file is recompiled automatically. Recall that you can import only public classes from other packages. A source file can only contain one public class, and the names of the file and the public class must match. Therefore, the compiler can easily locate source files for public classes. However, you can import nonpublic classes from the current package. These classes may be defined in source files with different names. If you import a class from the current package, the compiler searches _all_ source files of the current package to see which one defines the class.
+
+## Setting the Class Path
 
