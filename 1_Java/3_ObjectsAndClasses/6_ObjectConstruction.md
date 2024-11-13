@@ -2,8 +2,8 @@
 
 - [Overloading](#overloading)
 - [Default Field Initialization](#default-field-initialization)
-- [The Constructor With No Arguments]()
-- [Explicit Field Initialization]()
+- [The Constructor With No Arguments](#the-constructor-with-no-arguments)
+- [Explicit Field Initialization](#explicit-field-initialization)
 - [Parameter Names]()
 - [Calling Another Constructor]()
 - [Initialization Blocks]()
@@ -65,4 +65,36 @@ pubic Employee() {
 }
 ```
 
-If you 
+If you write a class with no constructors whatsoever, then a no-argument constructor is provided for you. This constructor sets _all_ the instance fields to their default values. So, all numeric data contained in the instance fields would be `0`, all `boolean` values would be `false`, and all object variables would be set to `null`.
+
+If a class supplies at least one constructor but does not supply a no-argument constructor, it is illegal to construct objects without supplying arguments. For example, our original `Employee` class in Listing 4.2 provided a single constructor:
+
+```Java
+Employee(String name, double salary, int y, int m, int d)
+```
+
+With that class, it was not legal to contruct default employees. That is, the call
+
+```Java
+e = new Employee();
+```
+
+would have been an error.
+
+- **CAUTION**: Please keep in mind that you get a free no-argument constructor _only_ when your class has no other constructors. If you write your class with even a single constructor of your own and you want the users of your class to have the ability to create an instance by a call to 
+
+    ```Java
+    new ClassName() {
+
+    }
+    ```
+
+    then you must provide a no-argument constructor. Of course, if you are happy with the default values for all fields, you can simply supply
+
+    ```Java
+    public ClassName() {
+
+    }
+    ```
+
+## Explicit Field Initialization
