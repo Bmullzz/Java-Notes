@@ -4,7 +4,7 @@
 - [Default Field Initialization](#default-field-initialization)
 - [The Constructor With No Arguments](#the-constructor-with-no-arguments)
 - [Explicit Field Initialization](#explicit-field-initialization)
-- [Parameter Names]()
+- [Parameter Names](#parameter-names)
 - [Calling Another Constructor]()
 - [Initialization Blocks]()
 - [Object Destruction and the `finalize` Method]()
@@ -142,3 +142,104 @@ class Employee {
     C++ uses this special syntax to call field constructors. In Java, there is no need for that because objects have no subobjects, only pointers to other objects.
 
 ## Parameter Names
+
+When you write very trivial constructors (and you'll write a lot of them), it can be somewhat frustrating to come up with parameter names.
+
+We have generally opted for single-letter parameter names:
+
+```Java
+public Employee(String n, double s) {
+    name = n;
+    salary = s;
+}
+```
+
+However, the drawback is that you need to read the code to tell what the `n` and `s` parameters mean.
+
+Some programmers prefix each parameter with an "a":
+
+```Java
+public Employee(String aName, double aSalary) {
+    name = aName;
+    salary = aSalary;
+}
+```
+
+That is quite neat. Any reader can immediately figure out the meaning of the parameters.
+
+Another commonly used trick relies on the fact that parameter variables _shadow_ instance fields with the same name. For example, if you call a parameter `salary`, then `salary` refers to the parameter, not the instance field. But you can still access the instance field as `this.salary`. Recall that `this` denotes the implicit parameter, that is, the object being constructed. Here is an example:
+
+```Java
+public Employee(String name, double salary) {
+    this.name = name;
+    this.salary = salary;
+}
+```
+
+- **C++ Note**: In C++, it is common to prefix instance fields with an underscore or a fixed letter. (The letters `m` and `x` are common choices.) For example, the salary field might be called `_salary`, `mSalary`, or `xSalary`. Java programmers don't ususally do that.
+
+## Calling Another Constructor
+
+The keyword `this` refers to the implicit parameter of a method. However, this keyword has a second meaning.
+
+If _the first statement of a constructor_ has the form `this(...)`, then the constructor calls another constructor of the same class. Here is a typical example:
+
+```Java
+public Employee(double s) {
+    // calls Employee(String, double)
+    this("Employee #" + nextId, s);
+    nextId++;
+}
+```
+
+When you call `new Employee(60000)`, the `Employee(double)` constructor calls the `Employee(String, double)` constructor.
+
+Using the `this` keyword in this manner is useful - you only need to write common construction code once.
+
+- **C++ Note**: The `this` reference in Java is identical to the `this` pointer in C++. However, in C++ it is not possible for one constructor to call another. If you want to factor out common initialization code in C++, you must write a separate method.
+
+## Initialization Blocks
+
+You have already seen two ways to initialize a data field:
+
+- By setting a value in a constructor
+
+- By assigning a value in the declaration
+
+There is a third mechanism in Java, called an _initialization block_. Class declarations can contain arbitrary blocks of code. These blocks are executed whenever an object of that class is constructed. For example:
+
+```Java
+class Employee {
+
+    private static int nextId;
+
+    private int id;
+    private String name;
+    private double salary;
+
+    // object initialization block
+    {
+        id = nextId;
+        nextId++;
+    }
+
+    public Employee(String n, double s) {
+        name = n;
+        salary = s;
+    }
+
+    public Employee() {
+        name = "";
+        salary = 0;
+    }
+
+    ...
+}
+```
+
+In this example, the `id` field is initialized in the object initialization block, no matter which constructor is used to construct an object. The initialization block runs first, and then the body of the constructor is executed.
+
+This mechanism is never necessary and is not common. It is usually more straightforward to place the initialization code inside a constructor.
+
+- **NOTE**: It is illegal to set fields in initialization blocks even if they are only defined later in the class. However, to avoid circular definitions, it is not legal to read from fields that are only initialized later. The exact rules are spelled out in the Java Language Specification section (http://docs.oracle.com/javase/specs). The rules are complex enough to baffle the compiler implementors - early versions of Java implemented them with subtle errors. Therefore, we suggest that you always place initialization blocks agter the field definitions.
+
