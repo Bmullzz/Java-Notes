@@ -233,3 +233,32 @@ public class Employee {
 ```
 
 ## Package Scope
+
+You have already encountered the access modifiers `public` and `private`. Features tagged as `public` can be used by any class. Private features can be used only by the class that defines them. If you don't specify either `public` or `private`, the feature (that is, the class, method, or variable) can be accessed by all methods in the same _package_.
+
+Consider the program in Listing 4.2. The `Employee` class was not defined as a public class. Therefore, only the other classes (such as `EmployeeTest`) in the same package - the default package in this case - can access it. For classes, this is a reasonable default. However, for variables, this was an unfortunate choice. Variables must be explicitly be marked for `private`, or they will default to being package visible. This, of course, breaks encapsulation. The problem is that it is awfully easy to forget to type the `private` keyword. Here is an example from the `Window` class in the `java.awt` package, which is part of the source code supplied with the JDK:
+
+```Java
+public class Window extends Container {
+    String warningString;
+    ...
+}
+```
+
+Note that warningString variable is not `private`! That means the methods of all classes in the `java.awt` package can access this variable and set it to whatever they like (such as `"Trust me!"`). Actually, the only methods that access this variable are in the `Window` class, so it would have been entirely appropriate to make the variable private. We suspect that the programmer typed the code in a hurry and simply forgot the `private` modifier. (We won't mention the programmer's name to protect the guilty - you can look into the source file yourself.)
+
+- **NOTE**: Amazingly enough, this problem has never been fixed, even though we have pointed it out in nine editions of this book - apparently the library implementors don't read _Core Java_. Not only that - new fields have been added to the class over time, and about half of them aren't private either.
+
+Is this really a problem? It depends. By default, packages are not closed entities. That is, anyone can add more classes to a package. Of course, hostile or clueless programmers can then add code that modifies variables with package visibility. For example, in early versions of Java, it was an easy matter to smuggle another class into the `java.awt` package. Simply start out the class with 
+
+```Java
+package java.awt;
+```
+
+Then place the resulting class file inside a subdirectory `java/awt` package. Through this subtrefuge, it was possible to set the warning string (see Figure 4.9).
+
+![calculator](image-5.png)
+
+- **Figure 4.9**: Changing the warning string in an applet window
+
+Starting with version 1.2, the JDK implementors rigged the class loader to explicitly disallow loading of user-defined classes whose package name starts with `"java."`. Of course, your own classes won't benefit from that protection. Instead, you can use another mechanism, _package sealing_, to address the issue of promiscuous package access. If you seal a package, not further classes can be added to it. You will see in Chapter 9 how you can produce a JAR file that contains sealed packages.
