@@ -98,3 +98,47 @@ would have been an error.
     ```
 
 ## Explicit Field Initialization
+
+By overloading the constructor methods in a class, you can build many ways to set the initial state of the instance fields of your classes. It is always a good idea to make sure that, regardless of the constructor call, every instance field is set to something meaningful.
+
+You can simply assign a value to any field in the class definition. For example: 
+
+```Java
+class Employee {
+    private String name = "";
+    ...
+}
+```
+
+This assignment is carried out before the constructor executes. This syntax is particularly useful if all constructors of a class need to set a particular instance field to the same value.
+
+The initialization value doesn't have to be a constant value. Here is an example in which a field is initialized with a method call. Consider an `Employee` class where each employee has an `id` field. You can initialize it as follows:
+
+```Java
+class Employee {
+    private static int nextId;
+    private int id = assignId();
+    ...
+    private static int assignId() {
+        int r = nextId;
+        nextId++;
+        return r;
+    }
+    ...
+}
+```
+
+- **C++ Note**: In C++, you cannot directly initialize instance fields of a class. All fields must be set in a constructor. However, C++ has a special initializer list syntax, such as
+
+    ```C++
+    Employee::Employee(String n, double s, int y, int m, int d) // C++
+    : name(n),
+      salary(s),
+      hireDay(y, m, d)
+    {
+    }
+    ```
+
+    C++ uses this special syntax to call field constructors. In Java, there is no need for that because objects have no subobjects, only pointers to other objects.
+
+## Parameter Names
