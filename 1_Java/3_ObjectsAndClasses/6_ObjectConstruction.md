@@ -7,7 +7,7 @@
 - [Parameter Names](#parameter-names)
 - [Calling Another Constructor](#calling-another-constructor)
 - [Initialization Blocks](#initialization-blocks)
-- [Object Destruction and the `finalize` Method]()
+- [Object Destruction and the `finalize` Method](#object-destruction-and-the-finalize-method)
 
 You have seen how to write simple constructors that define the initial state of your objects. However, since object construction is so important, Java offers quite a variety of mechanisms for writing constructors. We go over these mechanisms in the sections that follow.
 
