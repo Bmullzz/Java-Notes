@@ -13,3 +13,13 @@ The JDK contains a very useful tool, called `javadoc`, that generates HTML docum
 If you add comments that start with the special delimiter `/**` to your source code, you too can easily produce professional-looking documentation. This is a very nice approach because it lets you keep your code and documentation in one place. If you put your documentation into a separate file, then, as you probably know, the code and comments tend to diverge over time. When documentation comments are in the same file as the source code, it is an easy matter to update both and run `javadoc` again.
 
 ## Comment Insertion
+
+The `javadoc` utility extracts information for the following items:
+
+- Packages
+- Public classes and interfaces
+- Public and protected fields
+- Public and protected constructors and methods
+
+Protected features are introduced in the next chapter, interfaces the chapter after that.
+
