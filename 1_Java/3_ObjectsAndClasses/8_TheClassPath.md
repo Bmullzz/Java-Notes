@@ -1,6 +1,6 @@
 # The Class Path
 
-- [Setting the Class Path]()
+- [Setting the Class Path](#setting-the-class-path)
 
 As you have seen, classes are stored in subdirectories of the file system. The path to the class must match the package name.
 
