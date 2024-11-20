@@ -23,3 +23,9 @@ The `javadoc` utility extracts information for the following items:
 
 Protected features are introduced in the next chapter, interfaces the chapter after that.
 
+You can (and should) supply a comment for each of these features. Each comment is placed immediately _above_ the feature it describes. A comment starts with a `/**` and ends with a `*/`.
+
+Each `/**...*/` documentation comment contains _free-form text_ followed by _tags_. A tag starts with an `@`, such as `@author` or `@param`.
+
+The _first sentence_ of the free-form text should be a _summary statement_. The `javadoc` utility automatically generates summary pages that extract these sentences.
+
