@@ -29,3 +29,5 @@ Each `/**...*/` documentation comment contains _free-form text_ followed by _tag
 
 The _first sentence_ of the free-form text should be a _summary statement_. The `javadoc` utility automatically generates summary pages that extract these sentences.
 
+new
+
